@@ -1,0 +1,404 @@
+
+<!doctype html>
+<html lang="pt-br" dir="ltr">
+<head><script data-od-sandbox-shim>(function(){
+  function makeStore(){
+    var data = {};
+    var api = {
+      getItem: function(k){ return Object.prototype.hasOwnProperty.call(data, k) ? data[k] : null; },
+      setItem: function(k, v){ data[k] = String(v); },
+      removeItem: function(k){ delete data[k]; },
+      clear: function(){ data = {}; },
+      key: function(i){ return Object.keys(data)[i] || null; }
+    };
+    Object.defineProperty(api, 'length', { get: function(){ return Object.keys(data).length; } });
+    return api;
+  }
+  function tryShim(name){
+    var works = false;
+    try { works = !!window[name] && typeof window[name].getItem === 'function'; void window[name].length; }
+    catch (_) { works = false; }
+    if (works) return;
+    try { Object.defineProperty(window, name, { configurable: true, value: makeStore() }); }
+    catch (_) { try { window[name] = makeStore(); } catch (__) {} }
+  }
+  tryShim('localStorage');
+  tryShim('sessionStorage');
+})();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leonardo Carvalho — Social Media Editor</title>
+  <style>
+    :root {
+      --bg:      oklch(96% 0.004 100);
+      --surface: oklch(100% 0 0);
+      --fg:      oklch(15% 0.02 100);
+      --muted:   oklch(40% 0.02 100);
+      --border:  oklch(15% 0.02 100);
+      --accent:  oklch(60% 0.22 25);
+
+      --font-display: 'Times New Roman', 'Iowan Old Style', Georgia, serif;
+      --font-body:    ui-monospace, 'IBM Plex Mono', 'JetBrains Mono', Menlo, monospace;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-body);
+      line-height: 1.35;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Layout Base (A4 Proportions) */
+    .container {
+      display: grid;
+      grid-template-columns: 1fr;
+      width: 100%;
+      max-width: 1000px;
+      margin: 10px auto;
+      border: 2px solid var(--border);
+      background: var(--bg);
+    }
+
+    @media (min-width: 1024px) {
+      .container {
+        grid-template-columns: 70% 30%;
+        min-height: 297mm; /* A4 Height */
+        margin: 40px auto;
+      }
+    }
+
+    /* Sections */
+    section {
+      padding: 20px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    @media (min-width: 768px) {
+      section { padding: 30px; }
+    }
+
+    .masthead {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-direction: column;
+      background: var(--surface);
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 14vw, 10rem);
+      line-height: 0.8;
+      text-transform: uppercase;
+      letter-spacing: -0.05em;
+      margin-left: -0.05em;
+      padding: 20px 20px 10px 20px;
+    }
+
+    .role-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 2px solid var(--border);
+      padding: 15px 20px;
+    }
+
+    .role-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      background: var(--fg);
+      color: var(--bg);
+      padding: 4px 10px;
+      letter-spacing: 0.05em;
+    }
+
+    /* Content Area */
+    .experience-list {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .job-entry {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    @media (min-width: 768px) {
+      .job-entry { grid-template-columns: 160px 1fr; }
+    }
+
+    .job-date {
+      color: var(--muted);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      padding-top: 4px;
+    }
+
+    .job-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+
+    .job-company {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .job-desc {
+      list-style: none;
+      font-size: 0.85rem;
+    }
+
+    .job-desc li { margin-bottom: 4px; }
+    .job-desc li::before {
+      content: "→ ";
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      background: var(--surface);
+      display: flex;
+      flex-direction: column;
+    }
+
+    @media (min-width: 1024px) {
+      .sidebar { border-left: 2px solid var(--border); }
+    }
+
+    .sidebar-section h2 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--border);
+      width: 100%;
+    }
+
+    .skill-tag {
+      display: inline-block;
+      border: 1px solid var(--border);
+      padding: 3px 6px;
+      margin: 0 4px 6px 0;
+      font-size: 0.75rem;
+      background: var(--bg);
+    }
+
+    .contact-item { margin-bottom: 15px; font-size: 0.85rem; }
+    .contact-label {
+      color: var(--muted);
+      display: block;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    a { color: var(--fg); text-decoration: underline; text-underline-offset: 3px; font-weight: 700; }
+    a:hover { color: var(--accent); }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      margin-bottom: 25px;
+      text-transform: lowercase;
+      font-style: italic;
+    }
+
+    /* Floating UI */
+    .no-print {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 100;
+    }
+
+    .download-btn {
+      background: var(--fg);
+      color: var(--bg);
+      border: 2px solid var(--border);
+      padding: 12px 24px;
+      font-family: var(--font-body);
+      font-weight: 800;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 4px 4px 0px var(--border);
+    }
+
+    /* Print Optimization */
+    @media print {
+      @page {
+        size: A4;
+        margin: 0;
+      }
+      .no-print { display: none !important; }
+      body { background: white; padding: 0; margin: 0; }
+      .container { 
+        margin: 0; 
+        border: none; 
+        grid-template-columns: 70% 30% !important;
+        width: 100%;
+        height: 100vh;
+        min-height: 100vh;
+      }
+      .sidebar { border-left: 2px solid #000 !important; }
+      section { border-bottom: 2px solid #000; }
+      .role-title { background: #000 !important; color: #fff !important; -webkit-print-color-adjust: exact; }
+      h1 { font-size: 7.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="no-print">
+    <button class="download-btn" onclick="window.print()">
+      Baixar PDF (A4)
+    </button>
+  </div>
+
+  <main class="container">
+    
+    <header class="masthead">
+      <h1>Leonardo<br>Carvalho</h1>
+      <div class="role-header">
+        <span class="role-title">SOCIAL MEDIA EDITOR</span>
+        <div style="text-align: right; line-height: 1.1;">
+          <p style="font-size: 0.7rem; font-weight: 800; text-transform: uppercase;">CV Edition / 2026</p>
+          <p style="font-size: 0.65rem; color: var(--muted);">BRASÍLIA, DF</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="main-content">
+      <section>
+        <p style="font-size: 1.3rem; font-weight: 700; margin-bottom: 10px; max-width: 90%;">
+          Social Media Editor com foco em produção visual de alto impacto para redes sociais e curadoria cultural.
+        </p>
+        <p style="color: var(--muted); font-size: 0.9rem;">
+          Especialista em storytelling visual, ritmo de corte e domínio multiplataforma.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="section-title">experiência_</h2>
+        <div class="experience-list">
+          <article class="job-entry">
+            <div class="job-date">2022 — Atu.</div>
+            <div>
+              <h3 class="job-title">Coordenador de Conteúdo</h3>
+              <p class="job-company">Matizes Dumont</p>
+              <ul class="job-desc">
+                <li>Edição de vídeos e imagens para campanhas institucionais</li>
+                <li>Criação de conteúdo audiovisual e visual para redes sociais</li>
+                <li>Gestão de calendário editorial e planejamento gráfico</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="job-entry">
+            <div class="job-date">2024 — 2025</div>
+            <div>
+              <h3 class="job-title">Designer Gráfico</h3>
+              <p class="job-company">Angular Comunicação</p>
+              <ul class="job-desc">
+                <li>Peças visuais para campanhas digitais e sinalização</li>
+                <li>Criação de materiais impressos e diagramação editorial</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="job-entry">
+            <div class="job-date">2019 — 2021</div>
+            <div>
+              <h3 class="job-title">Gerente e Impressor</h3>
+              <p class="job-company">Pictura FineArt</p>
+              <ul class="job-desc">
+                <li>Tratamento de imagem e finalização técnica para fotógrafos</li>
+                <li>Preparação técnica de obras para exposições de alto padrão</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="job-entry">
+            <div class="job-date">2021</div>
+            <div>
+              <h3 class="job-title">Impressor / Editor</h3>
+              <p class="job-company">Projeto ACOlhiDOS – CCBB</p>
+              <ul class="job-desc">
+                <li>Edição e preparação técnica de fotografias para mostra</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section style="border-bottom: none;">
+        <h2 class="section-title">educação_</h2>
+        <div class="experience-list">
+          <article class="job-entry">
+            <div class="job-date">2014 — 2022</div>
+            <div>
+              <h3 class="job-title">Teoria Crítica e História da Arte</h3>
+              <p class="job-company">Universidade de Brasília (UnB)</p>
+            </div>
+          </article>
+          <article class="job-entry">
+            <div class="job-date">2013</div>
+            <div>
+              <h3 class="job-title">Brasília Sem Fronteira</h3>
+              <p class="job-company">Intercâmbio em Washington, DC</p>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+
+    <aside class="sidebar">
+      <section class="sidebar-section">
+        <h2>Contato_</h2>
+        <div class="contact-item">
+          <span class="contact-label">Telefone</span>
+          <a href="tel:+5561983613016">+55 61 98361-3016</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">E-mail</span>
+          <a href="mailto:le0nardoc@hotmail.com">le0nardoc@hotmail.com</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">Local</span>
+          <span style="font-weight: 700;">Brasília, DF</span>
+        </div>
+      </section>
+
+      <section class="sidebar-section">
+        <h2>Skills_</h2>
+        <div style="display: flex; flex-wrap: wrap;">
+          <span class="skill-tag">Adobe Photoshop</span>
+          <span class="skill-tag">Adobe Premiere</span>
+          <span class="skill-tag">Adobe Illustrator</span>
+          <span class="skill-tag">IA Generativa</span>
+          <span class="skill-tag">Storytelling</span>
+          <span class="skill-tag">Edição Mobile</span>
+          <span class="skill-tag">FineArt Print</span>
+        </div>
+      </section>
+
+      <section style="margin-top: auto; border-bottom: none; font-size: 0.6rem; color: var(--muted);">
+        <p>Curriculum Vitae / Leonardo Carvalho</p>
+        <p>Documento formatado para impressão A4</p>
+      </section>
+    </aside>
+
+  </main>
+
+</body>
+</html>

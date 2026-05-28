@@ -1,0 +1,1173 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><script data-od-sandbox-shim>(function(){
+  function makeStore(){
+    var data = {};
+    var api = {
+      getItem: function(k){ return Object.prototype.hasOwnProperty.call(data, k) ? data[k] : null; },
+      setItem: function(k, v){ data[k] = String(v); },
+      removeItem: function(k){ delete data[k]; },
+      clear: function(){ data = {}; },
+      key: function(i){ return Object.keys(data)[i] || null; }
+    };
+    Object.defineProperty(api, 'length', { get: function(){ return Object.keys(data).length; } });
+    return api;
+  }
+  function tryShim(name){
+    var works = false;
+    try { works = !!window[name] && typeof window[name].getItem === 'function'; void window[name].length; }
+    catch (_) { works = false; }
+    if (works) return;
+    try { Object.defineProperty(window, name, { configurable: true, value: makeStore() }); }
+    catch (_) { try { window[name] = makeStore(); } catch (__) {} }
+  }
+  tryShim('localStorage');
+  tryShim('sessionStorage');
+})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual de Marca · Vanda Mendes Ribeiro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --primary: #2D4A8A;
+    --primary-light: #3D5FA8;
+    --accent: #C85C3A;
+    --accent-light: #E07055;
+    --sage: #4A7C6F;
+    --sage-light: #6B9E90;
+    --sand: #E8DDD0;
+    --sand-light: #F4EFE9;
+    --white: #FAFAF8;
+    --muted: #8A8A9A;
+    --border: rgba(26,26,46,0.12);
+    --radius: 12px;
+    --shadow: 0 4px 32px rgba(26,26,46,0.08);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--ink);
+    line-height: 1.7;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(250,250,248,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  /* LOGO ANIMATION */
+  .logo-motion .st-rigor { fill: var(--primary); opacity: 0; transform-origin: 50% 80%; }
+  .logo-motion .st-vida { fill: var(--accent); opacity: 0; transform-origin: 50% 80%; }
+  .logo-motion .st-conexoes { fill: var(--sage); opacity: 0; transform-origin: 50% 60%; }
+  .logo-motion .st-proposito { fill: #E8DDD0; opacity: 0; transform-origin: center; }
+
+  .logo-motion.animate .st-rigor { animation: revealUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; animation-delay: 0.2s; }
+  .logo-motion.animate .st-vida { animation: revealUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; animation-delay: 0.5s; }
+  .logo-motion.animate .st-conexoes { animation: revealUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; animation-delay: 0.8s; }
+  .logo-motion.animate .st-proposito { animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; animation-delay: 1.4s; }
+
+  @keyframes revealUp {
+    from { opacity: 0; transform: translateY(30px) scale(0.9); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .nav-logo {
+    font-family: 'Newsreader', serif;
+    font-size: 1.1rem; font-weight: 700;
+    color: var(--primary);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .nav-logo svg { width: 24px; height: 24px; }
+  .nav-links {
+    display: flex; gap: 0.25rem;
+    list-style: none;
+    overflow-x: auto;
+  }
+  .nav-links a {
+    display: block;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--muted);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .nav-links a:hover { color: var(--primary); background: var(--sand); }
+
+  /* LAYOUT */
+  main { padding-top: 60px; }
+  .section { padding: 80px 2rem; }
+  .section:nth-child(even) { background: var(--sand-light); }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+  h2.section-title {
+    font-family: 'Newsreader', serif;
+    font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 2.5rem;
+    letter-spacing: -0.01em;
+  }
+  h3 {
+    font-family: 'Newsreader', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 0.75rem;
+  }
+  p { color: #3a3a4a; margin-bottom: 1rem; }
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    box-shadow: var(--shadow);
+  }
+  .card.accent-left { border-left: 4px solid var(--accent); }
+  .card.accent-primary { border-left: 4px solid var(--primary); }
+  .card.accent-sage { border-left: 4px solid var(--sage); }
+  .badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin: 0.2rem;
+  }
+  .badge-primary { background: #e8edf7; color: var(--primary); }
+  .badge-accent { background: #fbeee9; color: var(--accent); }
+  .badge-sage { background: #e8f2ef; color: var(--sage); }
+  .badge-muted { background: var(--sand); color: var(--muted); }
+  
+  .dashed-box {
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 2.5rem;
+    text-align: center;
+    color: var(--muted);
+    font-style: italic;
+    background: rgba(255,255,255,0.5);
+    min-height: 160px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 0.75rem;
+  }
+  .dashed-box .icon { font-size: 2rem; opacity: 0.4; }
+  .divider { width: 48px; height: 3px; background: var(--accent); border-radius: 2px; margin-bottom: 2rem; }
+
+  /* CAPA */
+  #capa {
+    min-height: 100vh;
+    background: var(--ink);
+    display: flex; align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  #capa::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 70% 50%, #2D4A8A44 0%, transparent 60%),
+                radial-gradient(ellipse at 20% 80%, #C85C3A22 0%, transparent 50%);
+  }
+  #capa::after {
+    content: 'VMR';
+    position: absolute;
+    right: -2rem; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Newsreader', serif;
+    font-size: clamp(12rem, 22vw, 22rem);
+    font-weight: 800;
+    color: rgba(255,255,255,0.03);
+    line-height: 1;
+    user-select: none;
+  }
+  .capa-content {
+    position: relative; z-index: 2;
+    max-width: 1100px; margin: 0 auto;
+    padding: 4rem 2rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 4rem;
+    align-items: center;
+    width: 100%;
+  }
+  .capa-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent-light);
+    margin-bottom: 1.5rem;
+  }
+  .capa-name {
+    font-family: 'Newsreader', serif;
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 800;
+    color: var(--white);
+    line-height: 0.95;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+  }
+  .capa-subtitle {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 300;
+    margin-bottom: 2rem;
+  }
+  .capa-manifesto {
+    font-family: 'Newsreader', serif;
+    font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+    font-style: italic;
+    color: rgba(255,255,255,0.75);
+    max-width: 560px;
+    line-height: 1.5;
+    border-left: 3px solid var(--accent);
+    padding-left: 1.5rem;
+  }
+  .capa-logo-box {
+    width: 200px; min-height: 200px;
+    border: 2px dashed rgba(255,255,255,0.2);
+    border-radius: var(--radius);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 0.5rem;
+    color: rgba(255,255,255,0.3);
+    font-size: 0.78rem;
+    text-align: center;
+    padding: 1.5rem;
+    flex-shrink: 0;
+  }
+  .capa-logo-box .icon { font-size: 2.5rem; }
+
+  /* CORES */
+  .color-chip {
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .color-swatch { height: 120px; }
+  .color-info { background: var(--white); padding: 1rem 1.25rem; }
+  .color-name { font-weight: 600; font-size: 0.9rem; color: var(--ink); }
+  .color-hex {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  .color-use { font-size: 0.78rem; color: #555; margin-top: 0.5rem; line-height: 1.4; }
+  .color-role {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.25rem;
+  }
+
+  /* TOM DE VOZ */
+  .voice-compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .voice-before, .voice-after {
+    padding: 1.25rem;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+  .voice-before {
+    background: #f9f0ee;
+    border-left: 3px solid #e0b0a0;
+    color: #666;
+  }
+  .voice-after {
+    background: #eef2fb;
+    border-left: 3px solid var(--primary);
+    color: var(--ink);
+  }
+  .voice-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .voice-before .voice-label { color: #c0806a; }
+  .voice-after .voice-label { color: var(--primary); }
+
+  /* TIPOGRAFIA */
+  .font-demo {
+    padding: 1.5rem;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 1rem;
+  }
+  .font-specimen-title {
+    font-family: 'Newsreader', serif;
+    font-size: 2.8rem;
+    line-height: 1.1;
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .font-specimen-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--primary);
+  }
+  .font-specimen-body {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    color: #444;
+    line-height: 1.7;
+  }
+  .font-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+
+  /* REGRAS */
+  .rule-list { list-style: none; }
+  .rule-list li {
+    display: flex; gap: 0.75rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+  }
+  .rule-list li:last-child { border-bottom: none; }
+  .rule-icon { flex-shrink: 0; font-size: 1.1rem; }
+
+  /* CHECKLIST */
+  .checklist { list-style: none; }
+  .checklist li {
+    display: flex; align-items: flex-start; gap: 0.75rem;
+    padding: 0.6rem 0;
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .check-box {
+    width: 20px; height: 20px;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* TABS */
+  .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .tab-btn {
+    padding: 0.5rem 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tab-btn:hover, .tab-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .capa-content { grid-template-columns: 1fr; }
+    .capa-logo-box { width: 100%; min-height: 140px; }
+    .nav-logo { display: none; }
+    .voice-compare { grid-template-columns: 1fr; }
+    .capa-name { font-size: 3.5rem; }
+  }
+
+  /* PRINT */
+  @media print {
+    nav { display: none; }
+    main { padding-top: 0; }
+    .section { page-break-inside: avoid; }
+  }
+
+  /* ANIMATIONS */
+  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity: 1; transform: none; }
+
+  .highlight-box {
+    background: linear-gradient(135deg, var(--primary) 0%, #1e3a6e 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: var(--radius);
+    margin: 1.5rem 0;
+  }
+  .highlight-box p { color: rgba(255,255,255,0.9); margin: 0; }
+  .highlight-box h3 { color: white; margin-bottom: 0.5rem; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#2D4A8B" d="M181.5,196.2c13.8,81.3,23.4,207.2,86.4,306,44.6,69.9,90,111,134.8,138.3,30.5,18.6,56.2,28.1,70.9,32.8,31.2,10.1,91,29.6,153.9,6.9,9.4-3.4,58.4-34.5,85.9-50.2,4-2.3-40.2-49.8-72.1-77.8-52.8-46.4-51-71.1-102-138.3-15.6-20.5-107.8-139-261-200.5-50.4-20.2-100.6-39.7-96.8-17.3Z"/>
+      <path fill="#C85C39" d="M472.3,805.5c19.7-20.5,11.9-13.5,117.4-124.3,85.8-90.1,136.4-128.8,160.6-158.4,41.1-50,25-81.1,26.5-176.5.6-39,3.7-60.6-5.3-71.2-22-26.1-128,11.7-201.5,72-146.2,119.8-141.1,309.4-140.2,331.9,1.3,30.2,15.1,154.9,42.4,126.5Z"/>
+      <path fill="#4A7C6F" d="M455.2,510.2c-23.5,72.7-25.9,140.1-25.5,143.6s0,1.5,0,1.6c21.7,8.2,43.7,18.7,58.7,22.1,39.4,8.9,81.6,12,92.8,12.5,0,0,76.1-74.6,99.9-99.4,0,0-7.6-10.3-39.5-38.3-13.7-12-23.7-22.6-31.9-32.8-45-56-86-126.7-86.9-125.9-22,21.4-56.8,82.7-67.7,116.5Z"/>
+      <circle fill="#E8DDD0" cx="544.5" cy="583.5" r="58.4"/>
+    </svg>
+    VMR · Manual de Marca
+  </div>
+  <ul class="nav-links">
+    <li><a href="#capa">Início</a></li>
+    <li><a href="#essencia">Essência</a></li>
+    <li><a href="#marca">Marca</a></li>
+    <li><a href="#cores">Cores</a></li>
+    <li><a href="#tipografia">Tipografia</a></li>
+    <li><a href="#voz">Tom de Voz</a></li>
+    <li><a href="#regras">Regras</a></li>
+    <li><a href="#guia">Guia Rápido</a></li>
+    <li><a href="#humanizado">Anti-IA</a></li>
+  </ul>
+</nav>
+
+<main>
+
+<!-- 1. CAPA -->
+<section id="capa">
+  <div class="capa-content">
+    <div>
+      <div class="capa-tag">Manual de Marca e Comunicação · 2025</div>
+      <h1 class="capa-name">Vanda<br>Mendes<br>Ribeiro</h1>
+      <p class="capa-subtitle">Pesquisadora · Socióloga · Especialista em Políticas Públicas</p>
+      <blockquote class="capa-manifesto">
+        "Transformo conhecimento sobre educação, desigualdade e gestão pública em capacidades concretas para que políticas de direitos aconteçam nos territórios."
+      </blockquote>
+    </div>
+    <div class="capa-logo-box" style="border:none; background:rgba(255,255,255,0.05); cursor:pointer;" onclick="this.querySelector('.logo-motion').classList.toggle('animate')">
+      <svg class="logo-motion animate" viewBox="0 0 1000 1000" style="width:120px; height:120px;">
+        <path class="st-rigor" d="M181.5,196.2c13.8,81.3,23.4,207.2,86.4,306,44.6,69.9,90,111,134.8,138.3,30.5,18.6,56.2,28.1,70.9,32.8,31.2,10.1,91,29.6,153.9,6.9,9.4-3.4,58.4-34.5,85.9-50.2,4-2.3-40.2-49.8-72.1-77.8-52.8-46.4-51-71.1-102-138.3-15.6-20.5-107.8-139-261-200.5-50.4-20.2-100.6-39.7-96.8-17.3Z"/>
+        <path class="st-vida" d="M472.3,805.5c19.7-20.5,11.9-13.5,117.4-124.3,85.8-90.1,136.4-128.8,160.6-158.4,41.1-50,25-81.1,26.5-176.5.6-39,3.7-60.6-5.3-71.2-22-26.1-128,11.7-201.5,72-146.2,119.8-141.1,309.4-140.2,331.9,1.3,30.2,15.1,154.9,42.4,126.5Z"/>
+        <path class="st-conexoes" d="M455.2,510.2c-23.5,72.7-25.9,140.1-25.5,143.6s0,1.5,0,1.6c21.7,8.2,43.7,18.7,58.7,22.1,39.4,8.9,81.6,12,92.8,12.5,0,0,76.1-74.6,99.9-99.4,0,0-7.6-10.3-39.5-38.3-13.7-12-23.7-22.6-31.9-32.8-45-56-86-126.7-86.9-125.9-22,21.4-56.8,82.7-67.7,116.5Z"/>
+        <circle class="st-proposito" cx="544.5" cy="583.5" r="58.4"/>
+      </svg>
+      <div style="margin-top:1rem; font-family:'DM Mono', monospace; font-size:0.6rem; color:rgba(255,255,255,0.4);">Clique para animar</div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. ESSÊNCIA -->
+<section id="essencia" class="section">
+  <div class="container">
+    <div class="section-label">02 · Essência da Comunicação</div>
+    <h2 class="section-title">A marca em sua<br>profundidade</h2>
+
+    <div class="highlight-box" style="margin-bottom:2.5rem;">
+      <h3>Síntese da Marca</h3>
+      <p>Vanda Mendes Ribeiro é pesquisadora, socióloga e especialista com trajetória de mais de duas décadas na intersecção entre produção de conhecimento, implementação de políticas públicas educacionais e promoção da equidade em territórios vulneráveis. Sua marca pessoal se distingue pela capacidade de conectar rigor acadêmico com operacionalidade prática: traduzindo conceitos complexos em instrumentos, estratégias e capacidades estatais concretas.</p>
+    </div>
+
+    <div class="grid-2" style="margin-bottom:2rem;">
+
+      <div class="card accent-primary">
+        <h3>Propósito</h3>
+        <p>Fortalecer a capacidade do State e das instituições para que políticas de direitos (especialmente na educação e na primeira infância) se materializem com equidade nos territórios onde a desigualdade é mais intensa.</p>
+      </div>
+
+      <div class="card accent-accent">
+        <h3>Promessa de Comunicação</h3>
+        <p>Quem interage com Vanda Mendes Ribeiro deve sentir que <strong>mudar instituições para que enfrentem desigualdades e produzam equidade é possível</strong>; e que existe conhecimento estruturado, evidências e metodologias para fazê-lo.</p>
+      </div>
+
+      <div class="card accent-sage">
+        <h3>Valores da Marca</h3>
+        <div style="margin-top:0.5rem;">
+          <span class="badge badge-primary">Compromisso</span>
+          <span class="badge badge-primary">Qualidade</span>
+          <span class="badge badge-primary">Colaboração</span>
+          <span class="badge badge-sage">Rigor sem simplificação</span>
+          <span class="badge badge-sage">Utilidade pública do conhecimento</span>
+          <span class="badge badge-sage">Equidade como valor central</span>
+        </div>
+      </div>
+
+      <div class="card accent-left">
+        <h3>Personalidade da Marca</h3>
+        <p>A marca de Vanda é <strong>ousada, com energia e humana</strong>. É uma voz que não romantiza o State, mas acredita na transformação institucional. Fala com autoridade equilibrada, precisão técnica e conexão com o real.</p>
+      </div>
+    </div>
+
+    <div class="grid-3">
+      <div class="card">
+        <div class="section-label" style="font-size:0.65rem;">Posicionamento Estratégico</div>
+        <ul style="list-style:none;font-size:0.88rem;line-height:2;">
+          <li>✦ Especialista técnica de alto nível</li>
+          <li>✦ Autoridade acadêmica e socióloga</li>
+          <li>✦ Formadora de líderes educacionais</li>
+          <li>✦ Mentora e referência prática em gestão</li>
+          <li>✦ Tradutora de evidências para o território</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="section-label" style="font-size:0.65rem;">Frase-guia da marca</div>
+        <blockquote style="font-family:'Newsreader',serif;font-size:1.1rem;font-style:italic;color:var(--primary);line-height:1.5;border-left:3px solid var(--accent);padding-left:1rem;">
+          "Políticas de direitos só existem quando chegam aos territórios. Eu trabalho para que isso aconteça."
+        </blockquote>
+      </div>
+
+      <div class="card">
+        <div class="section-label" style="font-size:0.65rem;">Prioridades de Mensagem</div>
+        <ol style="padding-left:1.2rem;font-size:0.85rem;line-height:1.8;color:#3a3a4a;">
+          <li>Inspiração e possibilidade de mudança institucional.</li>
+          <li>Influência em políticas públicas e gestão estratégica.</li>
+          <li>Capacidades estatais como ferramenta de equidade.</li>
+          <li>Análise racional ancorada em casos e narrativas concretas.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. MARCA -->
+<section id="marca" class="section">
+  <div class="container">
+    <div class="section-label">03 · Marca</div>
+    <h2 class="section-title">Identidade<br>visual</h2>
+
+    <div class="grid-2" style="margin-bottom:3rem;">
+      <div class="card">
+        <h3>Logo Principal</h3>
+        <div style="padding:2rem; background:var(--white); border-radius:8px; display:flex; align-items:center; justify-content:center; min-height:300px;">
+          <svg viewBox="0 0 2600 1000" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto;">
+            <g transform="translate(50, 100) scale(0.8)">
+              <path fill="#2D4A8B" d="M181.5,196.2c13.8,81.3,23.4,207.2,86.4,306,44.6,69.9,90,111,134.8,138.3,30.5,18.6,56.2,28.1,70.9,32.8,31.2,10.1,91,29.6,153.9,6.9,9.4-3.4,58.4-34.5,85.9-50.2,4-2.3-40.2-49.8-72.1-77.8-52.8-46.4-51-71.1-102-138.3-15.6-20.5-107.8-139-261-200.5-50.4-20.2-100.6-39.7-96.8-17.3Z"/>
+              <path fill="#C85C39" d="M472.3,805.5c19.7-20.5,11.9-13.5,117.4-124.3,85.8-90.1,136.4-128.8,160.6-158.4,41.1-50,25-81.1,26.5-176.5.6-39,3.7-60.6-5.3-71.2-22-26.1-128,11.7-201.5,72-146.2,119.8-141.1,309.4-140.2,331.9,1.3,30.2,15.1,154.9,42.4,126.5Z"/>
+              <path fill="#4A7C6F" d="M455.2,510.2c-23.5,72.7-25.9,140.1-25.5,143.6s0,1.5,0,1.6c21.7,8.2,43.7,18.7,58.7,22.1,39.4,8.9,81.6,12,92.8,12.5,0,0,76.1-74.6,99.9-99.4,0,0-7.6-10.3-39.5-38.3-13.7-12-23.7-22.6-31.9-32.8-45-56-86-126.7-86.9-125.9-22,21.4-56.8,82.7-67.7,116.5Z"/>
+              <circle fill="#E8DDD0" cx="544.5" cy="583.5" r="58.4"/>
+            </g>
+            <text x="950" y="380" font-family="'Newsreader', serif" font-weight="800" font-size="280" fill="#2D4A8B">Vanda</text>
+            <text x="950" y="560" font-family="'Newsreader', serif" font-weight="400" font-size="160" fill="#1A1A2E">Mendes Ribeiro</text>
+            <text x="950" y="720" font-family="sans-serif" font-weight="400" font-size="60" fill="#8A8A9A">Pesquisadora • Socióloga • Especialista em Políticas Públicas</text>
+          </svg>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Logo Motion</h3>
+        <div style="padding:2rem; background:var(--white); border-radius:8px; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:300px; cursor:pointer;" onclick="this.querySelector('.logo-motion').classList.toggle('animate')">
+          <svg class="logo-motion animate" viewBox="0 0 1000 1000" style="width:180px; height:180px; margin-bottom:1.5rem;">
+            <path class="st-rigor" d="M181.5,196.2c13.8,81.3,23.4,207.2,86.4,306,44.6,69.9,90,111,134.8,138.3,30.5,18.6,56.2,28.1,70.9,32.8,31.2,10.1,91,29.6,153.9,6.9,9.4-3.4,58.4-34.5,85.9-50.2,4-2.3-40.2-49.8-72.1-77.8-52.8-46.4-51-71.1-102-138.3-15.6-20.5-107.8-139-261-200.5-50.4-20.2-100.6-39.7-96.8-17.3Z"/>
+            <path class="st-vida" d="M472.3,805.5c19.7-20.5,11.9-13.5,117.4-124.3,85.8-90.1,136.4-128.8,160.6-158.4,41.1-50,25-81.1,26.5-176.5.6-39,3.7-60.6-5.3-71.2-22-26.1-128,11.7-201.5,72-146.2,119.8-141.1,309.4-140.2,331.9,1.3,30.2,15.1,154.9,42.4,126.5Z"/>
+            <path class="st-conexoes" d="M455.2,510.2c-23.5,72.7-25.9,140.1-25.5,143.6s0,1.5,0,1.6c21.7,8.2,43.7,18.7,58.7,22.1,39.4,8.9,81.6,12,92.8,12.5,0,0,76.1-74.6,99.9-99.4,0,0-7.6-10.3-39.5-38.3-13.7-12-23.7-22.6-31.9-32.8-45-56-86-126.7-86.9-125.9-22,21.4-56.8,82.7-67.7,116.5Z"/>
+            <circle class="st-proposito" cx="544.5" cy="583.5" r="58.4"/>
+          </svg>
+          <div style="text-align:center;">
+            <div style="font-family:'Newsreader', serif; font-weight:800; font-size:1.5rem; color:var(--primary);">Vanda</div>
+            <div style="font-family:'Newsreader', serif; font-weight:400; font-size:0.8rem; text-transform:uppercase; letter-spacing:0.1em;">Mendes Ribeiro</div>
+          </div>
+          <div style="margin-top:1rem; font-family:'DM Mono', monospace; font-size:0.6rem; color:var(--muted);">Clique para re-animar</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Variações da Marca</h3>
+    <div class="grid-3" style="margin-top:1.5rem; margin-bottom:3rem;">
+      <!-- Fundo Escuro Horizontal -->
+      <div class="card" style="background:var(--ink); border:none;">
+        <div style="font-size:0.65rem; color:rgba(255,255,255,0.4); margin-bottom:1rem; text-transform:uppercase;">Fundo Escuro H</div>
+        <svg viewBox="0 0 2600 1000" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto;">
+          <g transform="translate(50, 100) scale(0.8)">
+            <path fill="#FFFFFF" d="M181.5,196.2c13.8,81.3,23.4,207.2,86.4,306,44.6,69.9,90,111,134.8,138.3,30.5,18.6,56.2,28.1,70.9,32.8,31.2,10.1,91,29.6,153.9,6.9,9.4-3.4,58.4-34.5,85.9-50.2,4-2.3-40.2-49.8-72.1-77.8-52.8-46.4-51-71.1-102-138.3-15.6-20.5-107.8-139-261-200.5-50.4-20.2-100.6-39.7-96.8-17.3Z"/>
+            <path fill="#C85C39" d="M472.3,805.5c19.7-20.5,11.9-13.5,117.4-124.3,85.8-90.1,136.4-128.8,160.6-158.4,41.1-50,25-81.1,26.5-176.5.6-39,3.7-60.6-5.3-71.2-22-26.1-128,11.7-201.5,72-146.2,119.8-141.1,309.4-140.2,331.9,1.3,30.2,15.1,154.9,42.4,126.5Z"/>
+            <path fill="#4A7C6F" d="M455.2,510.2c-23.5,72.7-25.9,140.1-25.5,143.6s0,1.5,0,1.6c21.7,8.2,43.7,18.7,58.7,22.1,39.4,8.9,81.6,12,92.8,12.5,0,0,76.1-74.6,99.9-99.4,0,0-7.6-10.3-39.5-38.3-13.7-12-23.7-22.6-31.9-32.8-45-56-86-126.7-86.9-125.9-22,21.4-56.8,82.7-67.7,116.5Z"/>
+            <circle fill="#E8DDD0" cx="544.5" cy="583.5" r="58.4"/>
+          </g>
+          <text x="950" y="380" font-family="'Newsreader', serif" font-weight="800" font-size="280" fill="#FFFFFF">Vanda</text>
+          <text x="950" y="560" font-family="'Newsreader', serif" font-weight="400" font-size="160" fill="#E8DDD0">Mendes Ribeiro</text>
+          <text x="950" y="720" font-family="sans-serif" font-weight="400" font-size="60" fill="rgba(255,255,255,0.6)">Pesquisadora • Socióloga • Especialista em Políticas Públicas</text>
+        </svg>
+      </div>
+      <!-- Fundo Escuro Vertical -->
+      <div class="card" style="background:var(--ink); border:none;">
+        <div style="font-size:0.65rem; color:rgba(255,255,255,0.4); margin-bottom:1rem; text-transform:uppercase;">Fundo Escuro V</div>
+        <svg viewBox="0 0 1200 1500" xmlns="http://www.w3.org/2000/svg" style="width:auto; height:180px; margin:0 auto; display:block;">
+          <g transform="translate(100, 50) scale(1)">
+            <path fill="#FFFFFF" d="M181.5,196.2c13.8,81.3,23.4,207.2,86.4,306,44.6,69.9,90,111,134.8,138.3,30.5,18.6,56.2,28.1,70.9,32.8,31.2,10.1,91,29.6,153.9,6.9,9.4-3.4,58.4-34.5,85.9-50.2,4-2.3-40.2-49.8-72.1-77.8-52.8-46.4-51-71.1-102-138.3-15.6-20.5-107.8-139-261-200.5-50.4-20.2-100.6-39.7-96.8-17.3Z"/>
+            <path fill="#C85C39" d="M472.3,805.5c19.7-20.5,11.9-13.5,117.4-124.3,85.8-90.1,136.4-128.8,160.6-158.4,41.1-50,25-81.1,26.5-176.5.6-39,3.7-60.6-5.3-71.2-22-26.1-128,11.7-201.5,72-146.2,119.8-141.1,309.4-140.2,331.9,1.3,30.2,15.1,154.9,42.4,126.5Z"/>
+            <path fill="#4A7C6F" d="M455.2,510.2c-23.5,72.7-25.9,140.1-25.5,143.6s0,1.5,0,1.6c21.7,8.2,43.7,18.7,58.7,22.1,39.4,8.9,81.6,12,92.8,12.5,0,0,76.1-74.6,99.9-99.4,0,0-7.6-10.3-39.5-38.3-13.7-12-23.7-22.6-31.9-32.8-45-56-86-126.7-86.9-125.9-22,21.4-56.8,82.7-67.7,116.5Z"/>
+            <circle fill="#E8DDD0" cx="544.5" cy="583.5" r="58.4"/>
+          </g>
+          <text x="600" y="980" font-family="'Newsreader', serif" font-weight="800" font-size="220" fill="#FFFFFF" text-anchor="middle">Vanda</text>
+          <text x="600" y="1140" font-family="'Newsreader', serif" font-weight="400" font-size="130" fill="#E8DDD0" text-anchor="middle">Mendes Ribeiro</text>
+          <text x="600" y="1280" font-family="sans-serif" font-weight="400" font-size="45" fill="rgba(255,255,255,0.6)" text-anchor="middle">Pesquisadora • Socióloga • Especialista em Políticas Públicas</text>
+        </svg>
+      </div>
+      <!-- P&B Horizontal -->
+      <div class="card">
+        <div style="font-size:0.65rem; color:var(--muted); margin-bottom:1rem; text-transform:uppercase;">P&B Horizontal</div>
+        <svg viewBox="0 0 2600 1000" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto;">
+          <g transform="translate(50, 100) scale(0.8)">
+            <path fill="#000000" d="M181.5,196.2c13.8,81.3,23.4,207.2,86.4,306,44.6,69.9,90,111,134.8,138.3,30.5,18.6,56.2,28.1,70.9,32.8,31.2,10.1,91,29.6,153.9,6.9,9.4-3.4,58.4-34.5,85.9-50.2,4-2.3-40.2-49.8-72.1-77.8-52.8-46.4-51-71.1-102-138.3-15.6-20.5-107.8-139-261-200.5-50.4-20.2-100.6-39.7-96.8-17.3Z"/>
+            <path fill="#000000" d="M472.3,805.5c19.7-20.5,11.9-13.5,117.4-124.3,85.8-90.1,136.4-128.8,160.6-158.4,41.1-50,25-81.1,26.5-176.5.6-39,3.7-60.6-5.3-71.2-22-26.1-128,11.7-201.5,72-146.2,119.8-141.1,309.4-140.2,331.9,1.3,30.2,15.1,154.9,42.4,126.5Z"/>
+            <path fill="#000000" d="M455.2,510.2c-23.5,72.7-25.9,140.1-25.5,143.6s0,1.5,0,1.6c21.7,8.2,43.7,18.7,58.7,22.1,39.4,8.9,81.6,12,92.8,12.5,0,0,76.1-74.6,99.9-99.4,0,0-7.6-10.3-39.5-38.3-13.7-12-23.7-22.6-31.9-32.8-45-56-86-126.7-86.9-125.9-22,21.4-56.8,82.7-67.7,116.5Z"/>
+            <circle fill="none" stroke="#000000" stroke-width="20" cx="544.5" cy="583.5" r="58.4"/>
+          </g>
+          <text x="950" y="380" font-family="'Newsreader', serif" font-weight="800" font-size="280" fill="#000000">Vanda</text>
+          <text x="950" y="560" font-family="'Newsreader', serif" font-weight="400" font-size="160" fill="#000000">Mendes Ribeiro</text>
+          <text x="950" y="720" font-family="sans-serif" font-weight="400" font-size="60" fill="#000000">Pesquisadora • Socióloga • Especialista em Políticas Públicas</text>
+        </svg>
+      </div>
+      <!-- P&B Vertical -->
+      <div class="card">
+        <div style="font-size:0.65rem; color:var(--muted); margin-bottom:1rem; text-transform:uppercase;">P&B Vertical</div>
+        <svg viewBox="0 0 1200 1500" xmlns="http://www.w3.org/2000/svg" style="width:auto; height:180px; margin:0 auto; display:block;">
+          <g transform="translate(100, 50) scale(1)">
+            <path fill="#000000" d="M181.5,196.2c13.8,81.3,23.4,207.2,86.4,306,44.6,69.9,90,111,134.8,138.3,30.5,18.6,56.2,28.1,70.9,32.8,31.2,10.1,91,29.6,153.9,6.9,9.4-3.4,58.4-34.5,85.9-50.2,4-2.3-40.2-49.8-72.1-77.8-52.8-46.4-51-71.1-102-138.3-15.6-20.5-107.8-139-261-200.5-50.4-20.2-100.6-39.7-96.8-17.3Z"/>
+            <path fill="#000000" d="M472.3,805.5c19.7-20.5,11.9-13.5,117.4-124.3,85.8-90.1,136.4-128.8,160.6-158.4,41.1-50,25-81.1,26.5-176.5.6-39,3.7-60.6-5.3-71.2-22-26.1-128,11.7-201.5,72-146.2,119.8-141.1,309.4-140.2,331.9,1.3,30.2,15.1,154.9,42.4,126.5Z"/>
+            <path fill="#000000" d="M455.2,510.2c-23.5,72.7-25.9,140.1-25.5,143.6s0,1.5,0,1.6c21.7,8.2,43.7,18.7,58.7,22.1,39.4,8.9,81.6,12,92.8,12.5,0,0,76.1-74.6,99.9-99.4,0,0-7.6-10.3-39.5-38.3-13.7-12-23.7-22.6-31.9-32.8-45-56-86-126.7-86.9-125.9-22,21.4-56.8,82.7-67.7,116.5Z"/>
+            <circle fill="none" stroke="#000000" stroke-width="20" cx="544.5" cy="583.5" r="58.4"/>
+          </g>
+          <text x="600" y="980" font-family="'Newsreader', serif" font-weight="800" font-size="220" fill="#000000" text-anchor="middle">Vanda</text>
+          <text x="600" y="1140" font-family="'Newsreader', serif" font-weight="400" font-size="130" fill="#000000" text-anchor="middle">Mendes Ribeiro</text>
+          <text x="600" y="1280" font-family="sans-serif" font-weight="400" font-size="45" fill="#000000" text-anchor="middle">Pesquisadora • Socióloga • Especialista em Políticas Públicas</text>
+        </svg>
+      </div>
+      <!-- Miniatura -->
+      <div class="card">
+        <div style="font-size:0.65rem; color:var(--muted); margin-bottom:1rem; text-transform:uppercase;">Miniatura (Símbolo)</div>
+        <div style="width:100px; height:100px; margin:0 auto;">
+          <svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:100%;">
+            <path fill="#2D4A8B" d="M181.5,196.2c13.8,81.3,23.4,207.2,86.4,306,44.6,69.9,90,111,134.8,138.3,30.5,18.6,56.2,28.1,70.9,32.8,31.2,10.1,91,29.6,153.9,6.9,9.4-3.4,58.4-34.5,85.9-50.2,4-2.3-40.2-49.8-72.1-77.8-52.8-46.4-51-71.1-102-138.3-15.6-20.5-107.8-139-261-200.5-50.4-20.2-100.6-39.7-96.8-17.3Z"/>
+            <path fill="#C85C39" d="M472.3,805.5c19.7-20.5,11.9-13.5,117.4-124.3,85.8-90.1,136.4-128.8,160.6-158.4,41.1-50,25-81.1,26.5-176.5.6-39,3.7-60.6-5.3-71.2-22-26.1-128,11.7-201.5,72-146.2,119.8-141.1,309.4-140.2,331.9,1.3,30.2,15.1,154.9,42.4,126.5Z"/>
+            <path fill="#4A7C6F" d="M455.2,510.2c-23.5,72.7-25.9,140.1-25.5,143.6s0,1.5,0,1.6c21.7,8.2,43.7,18.7,58.7,22.1,39.4,8.9,81.6,12,92.8,12.5,0,0,76.1-74.6,99.9-99.4,0,0-7.6-10.3-39.5-38.3-13.7-12-23.7-22.6-31.9-32.8-45-56-86-126.7-86.9-125.9-22,21.4-56.8,82.7-67.7,116.5Z"/>
+            <circle fill="#E8DDD0" cx="544.5" cy="583.5" r="58.4"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-3">
+      <div class="card accent-primary">
+        <h3>O que a marca deve transmitir</h3>
+        <ul style="list-style:none;font-size:0.88rem;line-height:2;">
+          <li>✦ Autoridade intelectual sem frieza</li>
+          <li>✦ Energia e movimento</li>
+          <li>✦ Humanidade e acessibilidade</li>
+          <li>✦ Credibilidade institucional</li>
+          <li>✦ Profundidade e tradição intelectual</li>
+        </ul>
+      </div>
+      <div class="card accent-accent">
+        <h3>Recomendações de Aplicação</h3>
+        <ul style="list-style:none;font-size:0.88rem;line-height:2;">
+          <li>✦ Fundo claro (areia ou branco) preferencial</li>
+          <li>✦ Versão escura para fundos dark</li>
+          <li>✦ Nunca sobre textura complexa</li>
+          <li>✦ Espaçamento generoso ao redor</li>
+          <li>✦ Jamais distorcer proporções</li>
+        </ul>
+      </div>
+      <div class="card accent-sage">
+        <h3>Coerência Visual</h3>
+        <p style="font-size:0.88rem;">A identidade deve ser sofisticada e enérgica ao mesmo tempo. Evitar excesso de ornamentos acadêmicos tradicionais (brasões, formais) ou linguagem excessivamente informal. O equilíbrio é a marca de uma pesquisadora que transita entre o pensamento e a ação.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. CORES -->
+<section id="cores" class="section">
+  <div class="container">
+    <div class="section-label">04 · Paleta de Cores</div>
+    <h2 class="section-title">A linguagem<br>das cores</h2>
+    <p style="max-width:640px;margin-bottom:2.5rem;">Paleta estratégica baseada no perfil: ousada, com energia, humana. As cores que não representam a cliente (verde primário e amarelo) foram excluídas.</p>
+
+    <div class="grid-3" style="margin-bottom:2rem;">
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#2D4A8A;"></div>
+        <div class="color-info">
+          <div class="color-role">Cor Principal</div>
+          <div class="color-name">Azul Institucional</div>
+          <div class="color-hex">#2D4A8A</div>
+          <div class="color-use">Títulos, elementos estruturais, fundos de destaque. Transmite autoridade, credibilidade e profundidade intelectual.</div>
+        </div>
+      </div>
+
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#C85C3A;"></div>
+        <div class="color-info">
+          <div class="color-role">Cor de Acento</div>
+          <div class="color-name">Terracota Vivo</div>
+          <div class="color-hex">#C85C3A</div>
+          <div class="color-use">Pontos de ação, destaques, marcações. Traz energia, humanidade e urgência.</div>
+        </div>
+      </div>
+
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#4A7C6F;"></div>
+        <div class="color-info">
+          <div class="color-role">Cor Secundária</div>
+          <div class="color-name">Verde-Musgo Território</div>
+          <div class="color-hex">#4A7C6F</div>
+          <div class="color-use">Badges, cards de conteúdo, tags. Evoca territórios e o trabalho em áreas vulneráveis.</div>
+        </div>
+      </div>
+
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#E8DDD0;"></div>
+        <div class="color-info">
+          <div class="color-role">Cor Neutra</div>
+          <div class="color-name">Areia Quente</div>
+          <div class="color-hex">#E8DDD0</div>
+          <div class="color-use">Fundos de seções, separadores. Suaviza e humaniza sem perder elegância.</div>
+        </div>
+      </div>
+
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#1A1A2E;"></div>
+        <div class="color-info">
+          <div class="color-role">Cor de Texto</div>
+          <div class="color-name">Tinta Profunda</div>
+          <div class="color-hex">#1A1A2E</div>
+          <div class="color-use">Textos corridos, corpo. Mais sofisticado que o preto puro, mantém contraste e seriedade.</div>
+        </div>
+      </div>
+
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#FAFAF8;"></div>
+        <div class="color-info">
+          <div class="color-role">Cor de Fundo</div>
+          <div class="color-name">Branco Suave</div>
+          <div class="color-hex">#FAFAF8</div>
+          <div class="color-use">Fundo principal. Menos frio que o branco puro, mais acolhedor e humano.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="background:#f9f0ee;border-color:#e0b0a0;">
+      <strong>Restrição institucional:</strong> Não utilizar Verde-limão, Verde primário ou Amarelo em nenhum elemento da identidade.
+    </div>
+  </div>
+</section>
+
+<!-- 5. TIPOGRAFIA -->
+<section id="tipografia" class="section">
+  <div class="container">
+    <div class="section-label">05 · Tipografia</div>
+    <h2 class="section-title">As fontes<br>da marca</h2>
+
+    <div class="grid-2">
+      <div>
+        <div class="font-demo">
+          <div class="color-role" style="margin-bottom:0.5rem;">Fonte para Títulos</div>
+          <div class="font-specimen-title">Newsreader</div>
+          <div class="font-meta">Google Fonts: Serif: Pesos 200 a 800</div>
+          <p style="margin-top:1rem;font-size:0.85rem;color:#555;">Escolha estratégica: Newsreader é uma fonte serifada contemporânea que evoca o rigor editorial e acadêmico com um toque de modernidade e frescor. Diferente de serifas tradicionais, ela possui uma personalidade vibrante que se alinha ao equilíbrio entre a sociologia e a gestão prática.</p>
+        </div>
+
+        <div class="font-demo">
+          <div class="color-role" style="margin-bottom:0.5rem;">Fonte para Subtítulos e Interface</div>
+          <div class="font-specimen-sub">DM Sans: Subtítulo e navegação</div>
+          <div class="font-meta">Google Fonts: Sans-serif: Pesos 300 a 600</div>
+          <p style="margin-top:1rem;font-size:0.85rem;color:#555;">Contraponto moderno e acessível. Comunicativa, limpa e sem pretensão. Representa a dimensão humana e energética da marca.</p>
+        </div>
+      </div>
+
+      <div>
+        <div class="font-demo">
+          <div class="color-role" style="margin-bottom:0.5rem;">Fonte para Textos Corridos</div>
+          <div class="font-specimen-body">DM Sans 400: Para textos e parágrafos longos, a DM Sans oferece ótima legibilidade em telas digitais. Seu traço neutro sustenta conteúdo denso sem cansar o leitor, sendo essencial para artigos e posts analíticos.</div>
+          <div class="font-meta">Mesma família da subtítulo: coesão garantida</div>
+        </div>
+
+        <div class="font-demo">
+          <div class="color-role" style="margin-bottom:0.5rem;">Fonte de Apoio (Código e Dados)</div>
+          <div style="font-family:'DM Mono',monospace;font-size:1rem;color:var(--muted);">DM Mono: para tags, referências e metadados</div>
+          <div class="font-meta">Google Fonts: Monospace: Pesos 400, 500</div>
+          <p style="margin-top:1rem;font-size:0.85rem;color:#555;">Usada com moderação em rótulos e numerações técnicas. Evoca precisão e rigor metodológico.</p>
+        </div>
+
+        <div class="card" style="background:#eef2fb;">
+          <strong style="color:var(--primary);">Hierarquia Tipográfica</strong><br>
+          <div style="font-size:0.85rem;line-height:2.2;margin-top:0.5rem;">
+            <div style="font-family:'Newsreader',serif;font-size:1.8rem;font-weight:800;">H1: Newsreader 800</div>
+            <div style="font-family:'Newsreader',serif;font-size:1.3rem;font-weight:700;">H2: Newsreader 700</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:600;color:var(--primary);">H3: DM Sans 600</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:400;">Corpo: DM Sans 400</div>
+            <div style="font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--muted);">LABEL: DM Mono 500</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. TOM DE VOZ -->
+<section id="voz" class="section">
+  <div class="container">
+    <div class="section-label">06 · Tom de Voz</div>
+    <h2 class="section-title">Como a marca<br>fala</h2>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab(event,'voz-como')">Como fala</button>
+      <button class="tab-btn" onclick="switchTab(event,'voz-nao')">Como não fala</button>
+      <button class="tab-btn" onclick="switchTab(event,'voz-palavras')">Vocabulário</button>
+      <button class="tab-btn" onclick="switchTab(event,'voz-exemplos')">Exemplos</button>
+    </div>
+
+    <div id="voz-como" class="tab-content active">
+      <div class="grid-3">
+        <div class="card accent-primary">
+          <h3>Objetiva</h3>
+          <p>Vai direto ao ponto. Não desperdiça palavras. Cada frase carrega peso e intenção. Não faz rodeios.</p>
+        </div>
+        <div class="card accent-primary">
+          <h3>Profunda</h3>
+          <p>Não simplifica onde há complexidade real. Explica o mecanismo, não apenas o resultado.</p>
+        </div>
+        <div class="card accent-primary">
+          <h3>Significativa</h3>
+          <p>Conecta o técnico ao humano. Mostra que por trás de cada política há crianças e famílias reais.</p>
+        </div>
+        <div class="card accent-sage">
+          <h3>Propositiva</h3>
+          <p>Apresenta caminhos, instrumentos e possibilidades concretas de transformação.</p>
+        </div>
+        <div class="card accent-sage">
+          <h3>Rigorosa sem distância</h3>
+          <p>Usa terminologia precisa quando necessário, sempre conectada ao que acontece no território.</p>
+        </div>
+        <div class="card accent-sage">
+          <h3>Segura</h3>
+          <p>Fala com convicção baseada em evidências. Não teme discordar, fazendo-o com argumentos sólidos.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="voz-nao" class="tab-content">
+      <div class="grid-2">
+        <div class="card" style="border-left:4px solid #e07055;">
+          <h3 style="color:var(--accent);">Evitar</h3>
+          <ul style="list-style:none;font-size:0.88rem;line-height:2.2;">
+            <li>✗ Tom presunçoso ou de autopromoção excessiva</li>
+            <li>✗ Jocosidade ou humor que banaliza temas sérios</li>
+            <li>✗ Linguagem de "coach" ou motivacional genérica</li>
+            <li>✗ Slogans vazios sem conteúdo real</li>
+            <li>✗ Jargões acadêmicos sem tradução para o leitor</li>
+            <li>✗ Discurso puramente normativo sem mostrar o "como"</li>
+            <li>✗ Romantizar o State ou as políticas públicas</li>
+          </ul>
+        </div>
+        <div class="card" style="border-left:4px solid #e07055;">
+          <h3 style="color:var(--accent);">Nunca usar</h3>
+          <ul style="list-style:none;font-size:0.88rem;line-height:2.2;">
+            <li>✗ Linguagem de venda agressiva</li>
+            <li>✗ Excessos de exclamação e emojis</li>
+            <li>✗ Ironia e sarcasmo como postura habitual</li>
+            <li>✗ Afirmações categóricas sem base em evidência</li>
+            <li>✗ Discurso de expert infalível</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div id="voz-palavras" class="tab-content">
+      <div class="grid-2">
+        <div class="card">
+          <h3>Palavras-chave recomendadas</h3>
+          <div style="margin-top:0.75rem;">
+            <span class="badge badge-primary">Implementação</span>
+            <span class="badge badge-primary">Equidade</span>
+            <span class="badge badge-primary">Territórios</span>
+            <span class="badge badge-primary">Capacidades estatais</span>
+            <span class="badge badge-primary">Vulnerabilidade</span>
+            <span class="badge badge-primary">Coordenação</span>
+            <span class="badge badge-primary">Evidências</span>
+            <span class="badge badge-sage">Intersetorialidade</span>
+            <span class="badge badge-sage">Instrumentos de gestão</span>
+            <span class="badge badge-sage">Primeira infância</span>
+            <span class="badge badge-sage">Desigualdade educacional</span>
+            <span class="badge badge-sage">Políticas públicas</span>
+            <span class="badge badge-sage">Formação de gestores</span>
+            <span class="badge badge-sage">Federalismo</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Estilos a evitar</h3>
+          <div style="margin-top:0.75rem;">
+            <span class="badge badge-muted">"Incrível"</span>
+            <span class="badge badge-muted">"Revolucionário"</span>
+            <span class="badge badge-muted">"Mude sua vida"</span>
+            <span class="badge badge-muted">"Expert"</span>
+            <span class="badge badge-muted">"Segredo"</span>
+            <span class="badge badge-muted">"Simples assim"</span>
+            <span class="badge badge-muted">"Dicas"</span>
+            <span class="badge badge-muted">"Viral"</span>
+            <span class="badge badge-muted">"Disruptivo"</span>
+          </div>
+          <p style="font-size:0.82rem;margin-top:1rem;color:var(--muted);">Vocabulário que contrasta com a seriedade e profundidade da marca.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="voz-exemplos" class="tab-content">
+      <p style="margin-bottom:1.5rem;color:var(--muted);">Exemplos de construção de frase no tom da marca:</p>
+
+      <div style="margin-bottom:1.5rem;">
+        <div class="voice-compare">
+          <div class="voice-before">
+            <div class="voice-label">Antes (genérico)</div>
+            A educação é muito importante para o Brasil e precisamos investir mais nela.
+          </div>
+          <div class="voice-after">
+            <div class="voice-label">Depois (tom VMR)</div>
+            O Brasil produz políticas educacionais robustas no papel; o desafio reside na implementação, que depende de capacidades estatais construídas no dia a dia do território.
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:1.5rem;">
+        <div class="voice-compare">
+          <div class="voice-before">
+            <div class="voice-label">Antes (genérico)</div>
+            A desigualdade na educação é um problem grave que precisa ser resolvido urgentemente.
+          </div>
+          <div class="voice-after">
+            <div class="voice-label">Depois (tom VMR)</div>
+            A desigualdade educacional é produzida: pelos territórios, pelas condições das famílias e pelas próprias instituições. Compreender esse mecanismo é o primeiro passo para quebrá-lo.
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="voice-compare">
+          <div class="voice-before">
+            <div class="voice-label">Antes (genérico)</div>
+            Tenho muita experiência em políticas públicas e posso ajudar sua equipe.
+          </div>
+          <div class="voice-after">
+            <div class="voice-label">Depois (tom VMR)</div>
+            Duas décadas entre pesquisa, território e gestão pública ensinam que políticas falham por falta de capacidade instalada. Trabalhamos para preencher essa lacuna.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. REGRAS -->
+<section id="regras" class="section">
+  <div class="container">
+    <div class="section-label">07 · Regras de Uso</div>
+    <h2 class="section-title">Boas práticas<br>e limites</h2>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>✅ Boas Práticas Visuais</h3>
+        <ul class="rule-list">
+          <li><span class="rule-icon">✦</span>Usar a paleta proposta com consistência em todas as peças</li>
+          <li><span class="rule-icon">✦</span>Manter hierarquia tipográfica (Newsreader para destaque, DM Sans para corpo)</li>
+          <li><span class="rule-icon">✦</span>Garantir espaçamento generoso: a marca transmite profundidade, não pressa</li>
+          <li><span class="rule-icon">✦</span>Usar fotografia sempre que houver rosto, a cliente receberá um documento instruindo a tirar fotos institucionais</li>
+          <li><span class="rule-icon">✦</span>Preferir fundos claros (areia ou branco) como padrão</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>✅ Boas Práticas de Comunicação</h3>
+        <ul class="rule-list">
+          <li><span class="rule-icon">✦</span>Todo conteúdo deve estar ancorado em evidência ou experiência real</li>
+          <li><span class="rule-icon">✦</span>Explicar o mecanismo: não apenas o problema ou a solução</li>
+          <li><span class="rule-icon">✦</span>Sempre conectar o técnico ao impacto humano e territorial</li>
+          <li><span class="rule-icon">✦</span>Checar restrição institucional antes de publicar o conteúdo</li>
+          <li><span class="rule-icon">✦</span>Revisar obrigatoriamente antes de publicar</li>
+        </ul>
+      </div>
+
+      <div class="card" style="border-left:4px solid var(--accent);">
+        <h3 style="color:var(--accent);">❌ Erros a Evitar</h3>
+        <ul class="rule-list">
+          <li><span class="rule-icon">✗</span>Usar verde-limão, amarelo ou cores primárias saturadas</li>
+          <li><span class="rule-icon">✗</span>Distorcer proporções da logo</li>
+          <li><span class="rule-icon">✗</span>Publicar conteúdo que mencione ou referencie instituições, sem autorização prévia</li>
+          <li><span class="rule-icon">✗</span>Usar tom de coach, motivacional ou de autopromoção excessiva</li>
+          <li><span class="rule-icon">✗</span>Misturar muitas fontes ou usar tipografia decorativa</li>
+          <li><span class="rule-icon">✗</span>Publicar sem revisão de conteúdo da própria facilitadora</li>
+        </ul>
+      </div>
+
+      <div class="card accent-sage">
+        <h3>📱 Aplicação em Redes Sociais</h3>
+        <ul class="rule-list">
+          <li><span class="rule-icon">▸</span><strong>LinkedIn:</strong> Canal prioritário. Textos analíticos, dados e análises de políticas.</li>
+          <li><span class="rule-icon">▸</span><strong>Formatos:</strong> Pequenas falas, aulas e carrosséis educativos.</li>
+          <li><span class="rule-icon">▸</span><strong>Consistência:</strong> Mesma paleta, mesma tipografia, mesma voz em todas as plataformas.</li>
+          <li><span class="rule-icon">▸</span><strong>Frequência mínima:</strong> Regime quinzenal. Qualidade sobre quantidade.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 9. GUIA RÁPIDO -->
+<section id="guia" class="section">
+  <div class="container">
+    <div class="section-label">09 · Guia Rápido de Aplicação</div>
+    <h2 class="section-title">5 princípios<br>e checklist</h2>
+
+    <div class="grid-3" style="margin-bottom:3rem;">
+      <div class="card" style="background:var(--primary);color:white;border:none;">
+        <div style="font-family:'DM Mono',monospace;font-size:2rem;font-weight:500;color:rgba(255,255,255,0.3);margin-bottom:0.5rem;">01</div>
+        <h3 style="color:white;">Consistência acima de frequência</h3>
+        <p style="color:rgba(255,255,255,0.8);font-size:0.88rem;">Um post quinzenal bem elaborado vale mais que posts genéricos frequentes. A marca de Vanda é de profundidade.</p>
+      </div>
+      <div class="card" style="background:var(--accent);color:white;border:none;">
+        <div style="font-family:'DM Mono',monospace;font-size:2rem;font-weight:500;color:rgba(255,255,255,0.3);margin-bottom:0.5rem;">02</div>
+        <h3 style="color:white;">Evidência sempre âncora o discurso</h3>
+        <p style="color:rgba(255,255,255,0.8);font-size:0.88rem;">Toda afirmação deve ter raiz em pesquisa, dado ou experiência concreta. Isso é o que a diferencia de vozes de opinião genérica.</p>
+      </div>
+      <div class="card" style="background:var(--sage);color:white;border:none;">
+        <div style="font-family:'DM Mono',monospace;font-size:2rem;font-weight:500;color:rgba(255,255,255,0.3);margin-bottom:0.5rem;">03</div>
+        <h3 style="color:white;">Técnico + humano = a equação da marca</h3>
+        <p style="color:rgba(255,255,255,0.8);font-size:0.88rem;">Nunca apenas dados frios: sempre conectar ao impacto em crianças e territórios. Nunca apenas narrativa emocional: sempre com rigor.</p>
+      </div>
+      <div class="card" style="background:var(--primary-light);color:white;border:none;">
+        <div style="font-family:'DM Mono',monospace;font-size:2rem;font-weight:500;color:rgba(255,255,255,0.3);margin-bottom:0.5rem;">04</div>
+        <h3 style="color:white;">Respeitar os limites institucionais</h3>
+        <p style="color:rgba(255,255,255,0.8);font-size:0.88rem;">Checar restrições antes de publicar. Essa postura protege a credibilidade da facilitadora e das instituições parceiras.</p>
+      </div>
+      <div class="card" style="background:var(--sage-light);color:white;border:none;">
+        <div style="font-family:'DM Mono',monospace;font-size:2rem;font-weight:500;color:rgba(255,255,255,0.3);margin-bottom:0.5rem;">05</div>
+        <h3 style="color:white;">A voz é sempre a dela</h3>
+        <p style="color:rgba(255,255,255,0.8);font-size:0.88rem;">Todo conteúdo deve passar pela revisão da própria facilitadora. A autenticidade da marca é sua maior vantagem competitiva.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-bottom:1rem;">Checklist antes de publicar</h3>
+    <div class="card">
+      <ul class="checklist">
+        <li><div class="check-box"></div><span>O conteúdo está ancorado em evidência, dado ou experiência real?</span></li>
+        <li><div class="check-box"></div><span>O tom é preciso, objetivo e significativo: sem presunção ou jocosidade?</span></li>
+        <li><div class="check-box"></div><span>A paleta de cores e tipografia estão corretas?</span></li>
+        <li><div class="check-box"></div><span>As restrições institucionais foram respeitadas?</span></li>
+        <li><div class="check-box"></div><span>O texto foi revisado pela facilitadora?</span></li>
+        <li><div class="check-box"></div><span>A logo ou assinatura está presente e correta?</span></li>
+        <li><div class="check-box"></div><span>Há um CTA claro (quando necessário)?</span></li>
+        <li><div class="check-box"></div><span>O post está alinhado com o posicionamento técnico e formador?</span></li>
+        <li><div class="check-box"></div><span>A imagem ou visual é profissional e coerente com a identidade?</span></li>
+        <li><div class="check-box"></div><span>O conteúdo adiciona perspectiva própria?</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 10. DIRETRIZES DE CONTEÚDO HUMANIZADO -->
+<section id="humanizado" class="section" style="background:#fef9f7;">
+  <div class="container">
+    <div class="section-label" style="color:#c85c3a;">10 · Diretrizes de Conteúdo Humanizado</div>
+    <h2 class="section-title">Antídoto aos<br>vícios de IA</h2>
+    <p style="max-width:640px;margin-bottom:2.5rem;">Para preservar a autoridade técnica e o calor humano da marca, a produção de conteúdo deve evitar padrões mecânicos e clichês linguísticos típicos de geradores automáticos.</p>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>Proibições Gramaticais e Estilísticas</h3>
+        <ul style="list-style:none;font-size:0.88rem;line-height:2.2;">
+          <li>✗ <strong>Uso de travessões ("—"):</strong> Proibido. Substituir por vírgulas, dois-pontos ou parênteses.</li>
+          <li>✗ <strong>Estrutura "Não é sobre X, é sobre Y":</strong> Evitar. É uma fórmula artificial de profundidade.</li>
+          <li>✗ <strong>Jargões Corporativos:</strong> Banir "alavancar", "sinergia", "tecnologia de ponta".</li>
+          <li>✗ <strong>Introduções Clichês:</strong> Banir "no cenário atual", "no mundo digital".</li>
+          <li>✗ <strong>Conclusões Abruptas:</strong> Banir "em conclusão", "em suma", "em resumo".</li>
+          <li>✗ <strong>Pontuação Mecânica:</strong> Evitar o uso excessivo de ponto e vírgula e vírgulas antes do "e" (erro de tradução do inglês).</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>O Caminho da Autenticidade</h3>
+        <ul style="list-style:none;font-size:0.88rem;line-height:2.2;">
+          <li>✓ <strong>Vulnerabilidade Técnica:</strong> Admitir a complexidade e o que ainda é desafio, fugindo do tom de "expert infalível".</li>
+          <li>✓ <strong>Narrativas de Território:</strong> Incluir histórias reais, nomes e casos concretos observados em 20 anos de carreira.</li>
+          <li>✓ <strong>Variação de Ritmo:</strong> Alternar frases curtas e longas. Evitar parágrafos de tamanhos idênticos.</li>
+          <li>✓ <strong>Opinião Própria:</strong> Fugir da neutralidade excessiva. A marca tem valores: equidade, direitos e rigor técnico.</li>
+          <li>✓ <strong>Tom Emotivo Real:</strong> Substituir adjetivos vazios ("incrível", "revolucionário") por descrições de impacto real.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer style="background:var(--ink);color:rgba(255,255,255,0.4);text-align:center;padding:2rem;font-size:0.78rem;">
+  Manual de Marca · Vanda Mendes Ribeiro · Documento interno de estratégia · Todas as propostas visuais estão sujeitas a validação com a cliente.
+</footer>
+
+<script>
+  function switchTab(e, id) {
+    const container = e.target.closest('.container') || document.querySelector('#' + id).closest('.container');
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    e.target.classList.add('active');
+    document.getElementById(id).classList.add('active');
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Active nav highlight
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 80) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--primary)' : '';
+    });
+  });
+</script>
+</body>
+</html>
+,file_path:manual-marca-vanda-v5.html}

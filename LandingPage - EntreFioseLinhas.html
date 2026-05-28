@@ -1,0 +1,524 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><script data-od-sandbox-shim>(function(){
+  function makeStore(){
+    var data = {};
+    var api = {
+      getItem: function(k){ return Object.prototype.hasOwnProperty.call(data, k) ? data[k] : null; },
+      setItem: function(k, v){ data[k] = String(v); },
+      removeItem: function(k){ delete data[k]; },
+      clear: function(){ data = {}; },
+      key: function(i){ return Object.keys(data)[i] || null; }
+    };
+    Object.defineProperty(api, 'length', { get: function(){ return Object.keys(data).length; } });
+    return api;
+  }
+  function tryShim(name){
+    var works = false;
+    try { works = !!window[name] && typeof window[name].getItem === 'function'; void window[name].length; }
+    catch (_) { works = false; }
+    if (works) return;
+    try { Object.defineProperty(window, name, { configurable: true, value: makeStore() }); }
+    catch (_) { try { window[name] = makeStore(); } catch (__) {} }
+  }
+  tryShim('localStorage');
+  tryShim('sessionStorage');
+})();</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entre Fios e Encantarias — Matizes Dumont</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght @300;400;600;700&family=Cormorant+Garamond:ital,wght @0,300;1,400&family=Nunito:wght @300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F5ECD4;
+            --surface: #FAF5EC;
+            --fg: #3A3228;
+            --muted: #8A7D6E;
+            --border: #E8D5A8;
+            --accent: #C4541A;
+            --teal: #078787;
+            --dark: #5C3317;
+            
+            --font-display: 'Montserrat', sans-serif;
+            --font-editorial: 'Cormorant Garamond', serif;
+            --font-body: 'Nunito', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg);
+            color: var(--fg);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: -0.02em; }
+        .editorial { font-family: var(--font-editorial); font-style: italic; font-weight: 300; text-transform: none; letter-spacing: 0; }
+        .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; position: relative; }
+        section { padding: 100px 0; }
+
+        /* Navigation */
+        nav {
+            padding: 15px 0;
+            background-color: var(--teal);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-content { display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo { height: 45px; filter: brightness(0) invert(1); }
+        .nav-links { display: flex; gap: 32px; list-style: none; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
+        .nav-links a { text-decoration: none; color: #fff; opacity: 0.8; transition: opacity 0.2s; }
+        .nav-links a:hover { opacity: 1; }
+
+        /* Hero */
+        .hero {
+            background-color: var(--teal);
+            min-height: 75vh;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+        .hero-grid { display: grid; grid-template-columns: 1.2fr 1fr; align-items: center; width: 100%; }
+        .hero-text { z-index: 2; color: #fff; padding: 60px 0; }
+        .hero-eyebrow { font-family: var(--font-display); font-weight: 300; font-size: 0.8rem; letter-spacing: 0.35em; color: rgba(255,255,255,0.8); margin-bottom: 24px; display: block; }
+        .hero h1 { font-size: clamp(2.5rem, 6vw, 3.8rem); line-height: 1.1; margin-bottom: 24px; color: #fff; }
+        .hero h1 span { color: var(--bg); display: block; }
+        .hero p { max-width: 550px; margin-bottom: 40px; font-size: 1.2rem; font-weight: 300; color: rgba(255,255,255,0.9); line-height: 1.6; font-family: var(--font-display); }
+        
+        .hero-image-wrapper { position: relative; height: 100%; display: flex; justify-content: flex-end; align-items: stretch; }
+        .hero-logo { width: 125%; height: 100%; object-fit: cover; object-position: left center; transform: translateX(10%); pointer-events: none; }
+
+        .btn {
+            display: inline-block;
+            padding: 18px 32px;
+            background-color: var(--accent);
+            color: #fff !important;
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--accent);
+            text-align: center;
+            white-space: nowrap;
+        }
+        .btn:hover { background-color: var(--dark); border-color: var(--dark); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .btn-hero { background-color: var(--bg); color: var(--accent) !important; border-color: var(--bg); }
+        .btn-hero:hover { background-color: #fff; border-color: #fff; color: var(--dark) !important; }
+        .btn-outline { background-color: transparent; color: var(--accent) !important; }
+        .btn-outline:hover { background-color: var(--accent); color: #fff !important; }
+
+        /* Carousel Encontro */
+        .carousel { position: relative; width: 100%; aspect-ratio: 4/5; border-radius: 12px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .carousel-track { display: flex; transition: transform 0.5s ease; height: 100%; }
+        .carousel-slide { min-width: 100%; height: 100%; }
+        .carousel-slide img { width: 100%; height: 100%; object-fit: cover; }
+        .carousel-dots { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; transition: 0.3s; }
+        .dot.active { background: #fff; width: 24px; border-radius: 4px; }
+
+        /* Encontro Section */
+        .encontro { background-color: var(--surface); }
+        .encontro-header { text-align: center; margin-bottom: 60px; }
+        .encontro-content { display: grid; grid-template-columns: 1.1fr 1fr; gap: 60px; align-items: start; }
+        .encontro-text { font-size: 1.05rem; color: var(--fg); line-height: 1.8; }
+        .encontro-text p { margin-bottom: 28px; }
+        .encontro-text b { color: var(--accent); font-weight: 700; }
+        .encontro-text a { color: var(--accent); text-decoration: none; font-weight: 700; }
+
+        /* Facilitadores */
+        .fac-grid { display: grid; gap: 80px; }
+        .fac-block { text-align: center; }
+        .fac-block h3 { margin-bottom: 50px; font-size: 0.9rem; color: var(--muted); letter-spacing: 0.3em; border-bottom: 1px solid var(--border); display: inline-block; padding-bottom: 12px; }
+        .fac-list { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+        .fac-item { width: 200px; }
+        .fac-photo { width: 100%; aspect-ratio: 1/1; background: var(--surface); border: 1px solid var(--border); border-radius: 50%; margin-bottom: 24px; overflow: hidden; }
+        .fac-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Cronograma */
+        .timeline-day { display: grid; grid-template-columns: 100px 1fr; gap: 40px; margin-bottom: 60px; }
+        .day-num { font-family: var(--font-display); font-size: 3rem; font-weight: 700; color: var(--accent); line-height: 0.8; }
+        .day-events { border-left: 2px solid var(--border); padding-left: 40px; }
+        .event-item { margin-bottom: 24px; }
+        .book-highlight { color: var(--accent); font-weight: 700; font-style: italic; }
+
+        /* Local da Oficina */
+        .local { background-color: var(--bg); padding-bottom: 0; }
+        .local-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; margin-bottom: 80px; }
+        .map-wrapper { aspect-ratio: 16/9; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .map-wrapper iframe { width: 100%; height: 100%; border: 0; }
+        .tip-box { 
+            background: #fff; 
+            padding: 30px; 
+            border-radius: 12px; 
+            border: 1px solid var(--border); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            margin-top: 32px;
+            border-left: 4px solid var(--accent);
+        }
+        .tip-box p { font-family: var(--font-display); font-weight: 300; font-size: 0.95rem; color: var(--muted); }
+        .tip-box strong { color: var(--dark); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.75rem; display: block; margin-bottom: 8px; }
+        
+        /* Strip Carousel Local */
+        .strip-carousel { width: 100%; height: 300px; overflow: hidden; background: var(--bg); border-top: 1px solid var(--border); padding: 40px 0; }
+        .strip-track { display: flex; gap: 32px; animation: scroll 60s linear infinite; }
+        .strip-slide { min-width: 400px; height: 240px; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 45px rgba(0,0,0,0.12); border: 1px solid var(--border); }
+        .strip-slide img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); }
+        .strip-slide:hover img { transform: scale(1.08); }
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-50% - 16px)); } }
+
+        /* Relatos */
+        .relatos { background-color: var(--teal); color: #fff; text-align: center; }
+        .relatos .editorial { color: var(--bg); }
+        .relatos h2 { color: #fff; margin-bottom: 60px; }
+        .video-wrapper { max-width: 850px; margin: 0 auto; aspect-ratio: 16/9; background: #000; border-radius: 16px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.3); }
+        .video-wrapper iframe { width: 100%; height: 100%; border: 0; }
+
+        /* Pricing & Details */
+        .pricing { background-color: var(--surface); }
+        .price-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; align-items: stretch; margin-bottom: 60px; }
+        .price-card { background: #fff; padding: 40px 15px; border-radius: 16px; border: 1px solid var(--border); text-align: center; display: flex; flex-direction: column; align-items: center; transition: transform 0.3s; }
+        .price-card:hover { transform: translateY(-5px); }
+        .price-highlight { box-shadow: 0 20px 50px rgba(196, 84, 26, 0.15); border-color: var(--accent); }
+        .price-label { font-size: 0.65rem; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 20px; text-transform: uppercase; font-weight: 700; min-height: 40px; }
+        .price-value { font-family: var(--font-display); font-size: 2.1rem; font-weight: 700; color: var(--dark); margin-bottom: 12px; }
+        .price-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; margin-bottom: 24px; flex-grow: 1; }
+
+        .details-box { background: #fff; border-radius: 16px; border: 1px solid var(--border); overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; }
+        .details-col { padding: 40px; }
+        .details-col:first-child { background-color: var(--bg); border-right: 1px solid var(--border); }
+        .details-box h4 { font-size: 0.9rem; color: var(--dark); margin-bottom: 24px; letter-spacing: 1px; }
+        .details-list { list-style: none; }
+        .details-list li { margin-bottom: 12px; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; }
+        .details-list li::before { content: '✓'; color: var(--accent); font-weight: 700; }
+        .policy-item { margin-bottom: 16px; font-size: 0.85rem; color: var(--muted); }
+        .policy-item strong { color: var(--dark); display: block; margin-bottom: 4px; }
+
+        @media (max-width: 992px) {
+            .hero-grid, .encontro-content, .local-grid, .details-box { grid-template-columns: 1fr; }
+            .hero-text { text-align: center; padding: 40px 24px; }
+            .hero-logo { width: 160%; transform: translateX(0); }
+            .nav-links { display: none; }
+            .price-grid { grid-template-columns: 1fr; }
+        }
+
+        footer { padding: 40px 0; text-align: center; background: var(--surface); border-top: 1px solid var(--border); font-size: 0.65rem; color: var(--muted); }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="container nav-content">
+            <div class="logo"><img src="mp5wommt-Logo.svg" alt="Matizes Dumont" class="nav-logo"></div>
+            <ul class="nav-links">
+                <li><a href="#encontro">Propósito</a></li>
+                <li><a href="#familia">Família Dumont</a></li>
+                <li><a href="#jornada">Jornada</a></li>
+                <li><a href="#local">Local</a></li>
+                <li><a href="#relatos">Depoimento</a></li>
+                <li><a href="#investimento">Inscrição</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container" style="height: 100%;">
+            <div class="hero-grid">
+                <div class="hero-text">
+                    <span class="hero-eyebrow">OFICINA VIVENCIAL EM TIRADENTES-MG</span>
+                    <h1>Entre Fios e <span>Encantarias</span></h1>
+                    <p>Um caminho feito de fio, memória e presença para você reencontrar a própria linguagem criativa em Tiradentes-MG.</p>
+                    <a href="#investimento" class="btn btn-hero">Inscreva-se agora</a>
+                </div>
+                <div class="hero-image-wrapper">
+                    <img src="Logo - Variação 4.svg" alt="Logo Entre Fios e Encantarias" class="hero-logo">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="encontro" class="encontro">
+        <div class="container">
+            <div class="encontro-header">
+                <span class="editorial" style="color: var(--accent); font-size: 1.5rem; display: block; margin-bottom: 8px;">Conexão</span>
+                <h2 style="font-size: 2.5rem; color: var(--dark);">Por que esse encontro?</h2>
+            </div>
+            
+            <div class="encontro-content">
+                <div class="encontro-text">
+                    <p>Esse encontro tem como objetivo fortalecer a <b>rede transformadora do bordado livre</b>, afetivo, onde os fios sejam saberes e fazeres feitos à mão. Esse feixe de pessoas que acreditam no bordado como caminho e se constituem em uma bela comunidade do bordado brasileiro, em suas dimensões da arte, cultura, trabalho e vida.</p>
+                    <p>Será mais uma oportunidade para compartilhar o afeto bordado. Serão muitos momentos para escutar histórias e experimentar novas narrativas de bordadeiras(os) de diferentes regiões do Brasil, integrantes do Clube Matizes do Bordado, ou não, em oficinas de bordado, passeios e alegre convívio aos pés da Serra de São José em Tiradentes-MG. Em meio à arquitetura histórica e envolvidos pela riqueza cultural da região, promovemos esses momentos com o objetivo de ampliar e fortalecer o bordado contemporâneo e a cultura brasileira.</p>
+                    <p><b>Semana Criativa:</b> Nosso encontro estará integrado à programação da <b><a href="https://semanacriativadetiradentes.com.br/" target="_blank">SEMANA CRIATIVA DE TIRADENTES</a></b>. Uma oportunidade extraordinária que oferece diálogos entre a artesania e artistas brasileiros com arquitetos, designers, decoradores e pessoas interessadas no “feito à mão”.</p>
+                    <p style="font-size: 0.9rem; font-style: italic; color: var(--muted); margin-top: 20px;">*A participação na programação da Semana Criativa requer inscrição exclusiva na página oficial do evento.*</p>
+                </div>
+                
+                <div class="carousel" id="mainCarousel">
+                    <div class="carousel-track">
+                        <div class="carousel-slide"><img src="Ilustrativo 1.webp" alt="Oficina 1"></div>
+                        <div class="carousel-slide"><img src="Ilustrativo 1.2.webp" alt="Oficina 2"></div>
+                        <div class="carousel-slide"><img src="Ilustrativo 1.3.webp" alt="Oficina 3"></div>
+                        <div class="carousel-slide"><img src="Ilustrativo 1.4.webp" alt="Oficina 4"></div>
+                        <div class="carousel-slide"><img src="Ilustrativo 1.5.webp" alt="Oficina 5"></div>
+                        <div class="carousel-slide"><img src="Ilustrativo 1.6.webp" alt="Oficina 6"></div>
+                        <div class="carousel-slide"><img src="Ilustrativo 1.7.webp" alt="Oficina 7"></div>
+                        <div class="carousel-slide"><img src="Ilustrativo 1.8.webp" alt="Oficina 8"></div>
+                        <div class="carousel-slide"><img src="Ilustrativo 1.9.webp" alt="Oficina 9"></div>
+                    </div>
+                    <div class="carousel-dots"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="familia" class="facilitadores">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 64px;">
+                <span class="editorial" style="color: var(--accent); font-size: 1.5rem; display: block; margin-bottom: 8px;">Acompanhamento</span>
+                <h2 style="font-size: 2.2rem; color: var(--dark);">Venha bordar com a família Dumont!</h2>
+            </div>
+            
+            <div class="fac-grid">
+                <div class="fac-block">
+                    <h3>Madrinhas</h3>
+                    <div class="fac-list">
+                        <div class="fac-item">
+                            <div class="fac-photo"><img src="Ilustrativo 2.webp" alt="Marilu Dumont"></div>
+                            <div class="fac-name">Marilu Dumont</div>
+                        </div>
+                        <div class="fac-item">
+                            <div class="fac-photo"><img src="Ilustrativo 3.webp" alt="Martha Dumont"></div>
+                            <div class="fac-name">Martha Dumont</div>
+                        </div>
+                        <div class="fac-item">
+                            <div class="fac-photo"><img src="Ilustrativo 4.webp" alt="Sávia Dumont"></div>
+                            <div class="fac-name">Sávia Dumont</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fac-block">
+                    <h3>Arte-Educadores</h3>
+                    <div class="fac-list">
+                        <div class="fac-item">
+                            <div class="fac-photo"><img src="Ilustrativo 7.webp" alt="Leninha Dumont"></div>
+                            <div class="fac-name">Leninha Dumont</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="jornada" class="program">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 64px;">
+                <span class="editorial" style="color: var(--accent); font-size: 1.5rem; display: block; margin-bottom: 8px;">O Caminho</span>
+                <h2 style="font-size: 2.2rem; color: var(--dark);">Cronograma da Oficina</h2>
+            </div>
+            <div class="timeline">
+                <div class="timeline-day">
+                    <div class="day-header"><div class="day-num">15</div><div class="day-month">OUT</div></div>
+                    <div class="day-events">
+                        <div class="event-item">
+                            <span class="event-time">Manhã — Abertura</span>
+                            <div class="event-desc">Roda de conversa com Luis Mello, Carmen Lúcia (a confirmar) e Grupo Matizes Dumont.</div>
+                        </div>
+                        <div class="event-item">
+                            <span class="event-time">Manhã — Lançamentos</span>
+                            <div class="event-desc">Maria Helena lança 2° edição do livro <span class="book-highlight">Maricota Aprende a Bordar</span> e presença da Ministra Carmen Lúcia (a confirmar).</div>
+                        </div>
+                        <div class="event-item">
+                            <span class="event-time">14h – 18h</span>
+                            <div class="event-desc">1º dia de oficina vivencial (Materiais e coffee break inclusos).</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-day">
+                    <div class="day-header"><div class="day-num">16</div><div class="day-month">OUT</div></div>
+                    <div class="day-events">
+                        <div class="event-item">
+                            <span class="event-time">14h – 18h — Imersão</span>
+                            <div class="event-desc">Continuação da oficina vivencial (4h de imersão profunda).</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-day">
+                    <div class="day-header"><div class="day-num">17</div><div class="day-month">OUT</div></div>
+                    <div class="day-events">
+                        <div class="event-item">
+                            <span class="event-time">14h – 18h — Encerramento</span>
+                            <div class="event-desc">Último bloco da oficina vivencial.</div>
+                        </div>
+                        <div class="event-item">
+                            <span class="event-time">Noite — Celebração</span>
+                            <div class="event-desc">Cortejo de Encantarias (Data e horário a confirmar).</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="local" class="local">
+        <div class="container">
+            <div class="local-grid">
+                <div class="local-info">
+                    <span class="editorial" style="color: var(--accent); font-size: 1.5rem; display: block; margin-bottom: 8px;">Ambiente</span>
+                    <h3>local da Oficina</h3>
+                    <p class="local-address"><b><a href="https://maps.app.goo.gl/a6FRGmL1HRWsjnKH6" target="_blank" style="color: inherit; text-decoration: none;">Armazém 26</a></b><br>Av. Governador Israel Pinheiro, 26<br>Tiradentes/MG · CEP 36.325-000</p>
+                    <p style="margin-bottom: 24px;">📞 (32) 99198-2626 · armazem26.com.br</p>
+                    
+                    <div class="tip-box">
+                        <strong>Dica de Acesso</strong>
+                        <p>Estimativa de táxi a partir do centro: R$ 25,00. A pousada possui taxistas parceiros para facilitar seu deslocamento.</p>
+                    </div>
+                </div>
+                <div class="map-wrapper">
+                    <!-- Mapa Incorporado Corretamente -->
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3721.564998967!2d-44.177579724128!3d-21.130836577864!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xa1c0aa4454e6cd%3A0x64cca660ebc31451!2sPousada%20Armaz%C3%A9m%2026!5e0!3m2!1spt-BR!2sbr!4v1716243831835!5m2!1spt-BR!2sbr" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+        
+        <div class="strip-carousel">
+            <div class="strip-track">
+                <div class="strip-slide"><img src="Armazem 1.webp" alt="Ambiente 1"></div>
+                <div class="strip-slide"><img src="Armazem 2.webp" alt="Ambiente 2"></div>
+                <div class="strip-slide"><img src="Armazem 3.webp" alt="Ambiente 3"></div>
+                <div class="strip-slide"><img src="Armazem 4.webp" alt="Ambiente 4"></div>
+                <div class="strip-slide"><img src="Armazem 5.webp" alt="Ambiente 5"></div>
+                <div class="strip-slide"><img src="Armazem 6.webp" alt="Ambiente 6"></div>
+                <div class="strip-slide"><img src="Armazem 7.webp" alt="Ambiente 7"></div>
+                <!-- Loop Cópia -->
+                <div class="strip-slide"><img src="Armazem 1.webp" alt="Ambiente 1"></div>
+                <div class="strip-slide"><img src="Armazem 2.webp" alt="Ambiente 2"></div>
+                <div class="strip-slide"><img src="Armazem 3.webp" alt="Ambiente 3"></div>
+                <div class="strip-slide"><img src="Armazem 4.webp" alt="Ambiente 4"></div>
+                <div class="strip-slide"><img src="Armazem 5.webp" alt="Ambiente 5"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="relatos" class="relatos">
+        <div class="container">
+            <div style="margin-bottom: 60px;">
+                <span class="editorial" style="font-size: 1.5rem; display: block; margin-bottom: 8px;">Relatos</span>
+                <h2 style="font-size: 2.2rem;">A voz de quem já bordou conosco</h2>
+            </div>
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/NnIhWyQks_s" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </section>
+
+    <section id="investimento" class="pricing">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 64px;">
+                <span class="editorial" style="color: var(--accent); font-size: 1.5rem; display: block; margin-bottom: 8px;">Investimento</span>
+                <h2 style="font-size: 2.2rem; color: var(--dark);">Escolha sua forma de participação</h2>
+            </div>
+            
+            <div class="price-grid">
+                <div class="price-card price-highlight">
+                    <div class="price-label">CLUBE & ATELIÊ + PIX</div>
+                    <div class="price-value">R$ 1.360<small>,00</small></div>
+                    <p class="price-desc">Desconto de 15% exclusivo para membros do Clube Matizes e Ateliê Leninha Dumont.</p>
+                    <a href="https://api.whatsapp.com/send/?phone=5561981163593&text=Oi%2C+sou+membro+do+Clube+e+quero+pagar+no+pix+com+desconto" target="_blank" class="btn"><span>Inscrever-se</span> com Pix</a>
+                </div>
+
+                <div class="price-card">
+                    <div class="price-label">Pix (Geral)</div>
+                    <div class="price-value">R$ 1.440<small>,00</small></div>
+                    <p class="price-desc">Desconto de 10% para pagamento à vista via Pix para o público geral.</p>
+                    <a href="#" class="btn btn-outline"><span>Inscrever-se</span> com Pix</a>
+                </div>
+
+                <div class="price-card price-highlight">
+                    <div class="price-label">Clube & Ateliê + Cartão</div>
+                    <div class="price-value">R$ 1.520<small>,00</small></div>
+                    <p class="price-desc">Desconto de 5% para membros. Parcelamento facilitado via PagSeguro.</p>
+                    <a href="https://api.whatsapp.com/send/?phone=5561981163593&text=Oi%2C+sou+membro+do+Clube+e+quero+pagar+no+cartão+com+desconto" target="_blank" class="btn btn-outline"><span>Inscrever-se</span> agora</a>
+                </div>
+
+                <div class="price-card">
+                    <div class="price-label">Cartão (Geral)</div>
+                    <div class="price-value">R$ 1.600<small>,00</small></div>
+                    <p class="price-desc">Valor integral. Parcelamento em até 3x sem juros no PagSeguro.</p>
+                    <a href="#" class="btn btn-outline"><span>Inscrever-se</span> agora</a>
+                </div>
+            </div>
+
+            <div class="details-box">
+                <div class="details-col">
+                    <h4>O que está incluído</h4>
+                    <ul class="details-list">
+                        <li>12h de oficina presencial com a Família Dumont</li>
+                        <li>Todos os materiais necessários para a vivência</li>
+                        <li>Coffee break completo nos 3 dias de evento</li>
+                        <li>Metodologia exclusiva (A) Bordar o Ser</li>
+                    </ul>
+                    <p style="font-size: 0.75rem; margin-top: 20px; color: var(--muted); font-style: italic;">* O participante deve levar apenas uma tesoura pequena.</p>
+                </div>
+                <div class="details-col">
+                    <h4>Informações e Cancelamento</h4>
+                    <div class="policy-item">
+                        <strong>Logística</strong>
+                        Taxas de operadoras acrescidas no checkout. Despesas de transporte e hospedagem são por conta do participante.
+                    </div>
+                    <div class="policy-item">
+                        <strong>Política de Cancelamento</strong>
+                        Até 45 dias antes: Análise individual de estorno.<br>
+                        Menos de 45 dias: Reembolso de 50% do valor pago.
+                    </div>
+                    <div class="policy-item" style="border-top: 1px solid var(--border); padding-top: 15px; font-style: italic;">
+                        Exceção: Sem taxas em caso de doença ou falecimento (participante ou parente próximo).
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container" style="display: flex; flex-direction: column; align-items: center;">
+            <span style="font-family: var(--font-display); font-weight: 700; color: var(--dark); display: block; margin-bottom: 12px; font-size: 0.85rem; letter-spacing: 0.1em;">MATIZES DUMONT</span>
+            <p>© 2026 Grupo Matizes Dumont. Tiradentes, MG.</p>
+            <p style="margin-top: 4px; opacity: 0.6; font-size: 0.6rem;">Rede Transformadora do Bordado Contemporâneo.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Main Carousel
+        const track = document.querySelector('.carousel-track');
+        const slides = Array.from(track.children);
+        const dotsNav = document.querySelector('.carousel-dots');
+        let currentIndex = 0;
+
+        slides.forEach((_, i) => {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if (i === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => moveToSlide(i));
+            dotsNav.appendChild(dot);
+        });
+
+        const dots = Array.from(dotsNav.children);
+        function moveToSlide(index) {
+            track.style.transform = `translateX(-${index * 100}%)`;
+            dots[currentIndex].classList.remove('active');
+            dots[index].classList.add('active');
+            currentIndex = index;
+        }
+
+        setInterval(() => { moveToSlide((currentIndex + 1) % slides.length); }, 5000);
+    </script>
+</body>
+</html>

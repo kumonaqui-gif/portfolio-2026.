@@ -1,30 +1,6 @@
-
 <!doctype html>
 <html lang="pt-br" dir="ltr">
-<head><script data-od-sandbox-shim>(function(){
-  function makeStore(){
-    var data = {};
-    var api = {
-      getItem: function(k){ return Object.prototype.hasOwnProperty.call(data, k) ? data[k] : null; },
-      setItem: function(k, v){ data[k] = String(v); },
-      removeItem: function(k){ delete data[k]; },
-      clear: function(){ data = {}; },
-      key: function(i){ return Object.keys(data)[i] || null; }
-    };
-    Object.defineProperty(api, 'length', { get: function(){ return Object.keys(data).length; } });
-    return api;
-  }
-  function tryShim(name){
-    var works = false;
-    try { works = !!window[name] && typeof window[name].getItem === 'function'; void window[name].length; }
-    catch (_) { works = false; }
-    if (works) return;
-    try { Object.defineProperty(window, name, { configurable: true, value: makeStore() }); }
-    catch (_) { try { window[name] = makeStore(); } catch (__) {} }
-  }
-  tryShim('localStorage');
-  tryShim('sessionStorage');
-})();</script>
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Leonardo Carvalho, Portfólio 2026</title>
@@ -47,6 +23,7 @@
       --muted:   oklch(40% 0.02 100);
       --border:  oklch(15% 0.02 100);
       --accent:  oklch(60% 0.22 25);
+      --red:     oklch(55% 0.25 25);
 
       --font-display: 'Times New Roman', 'Iowan Old Style', Georgia, serif;
       --font-body:    ui-monospace, 'IBM Plex Mono', 'JetBrains Mono', Menlo, monospace;
@@ -265,67 +242,37 @@
     /* Timeline */
     .timeline-container {
       position: relative;
-      margin-top: 40px;
-      padding-bottom: 40px;
+      margin-top: 20px;
+      padding-bottom: 20px;
     }
 
     @media (min-width: 1024px) {
-      .timeline-container::before,
-      .timeline-container::after {
-        content: "";
-        position: absolute;
-        top: 0; bottom: 0;
-        width: 100px;
-        z-index: 10;
-        pointer-events: none;
-      }
-      .timeline-container::before {
-        left: 0;
-        background: linear-gradient(to right, var(--bg), transparent);
-      }
-      .timeline-container::after {
-        right: 0;
-        background: linear-gradient(to left, var(--bg), transparent);
-      }
-      
       .timeline-scroll {
         display: flex;
         overflow-x: auto;
-        gap: 40px;
-        padding: 60px 40px;
-        scrollbar-width: auto;
-        scrollbar-color: var(--accent) var(--border);
+        gap: 60px;
+        padding: 80px 40px;
+        scrollbar-width: none;
       }
-      .timeline-scroll::-webkit-scrollbar { height: 12px; }
-      .timeline-scroll::-webkit-scrollbar-track { 
-        background: var(--surface); 
-        border: 1px solid var(--border);
-        border-radius: 6px;
-      }
-      .timeline-scroll::-webkit-scrollbar-thumb { 
-        background: var(--accent); 
-        border-radius: 6px;
-        border: 2px solid var(--surface);
-      }
+      .timeline-scroll::-webkit-scrollbar { display: none; }
       
       .timeline-line {
         top: 50%;
         left: 0;
         right: 0;
-        height: 2px;
+        height: 1px;
         transform: translateY(-50%);
         position: absolute;
         background: var(--border);
         z-index: 1;
       }
       .timeline-item {
-        min-width: 320px;
+        min-width: 300px;
         position: relative;
         z-index: 2;
-        padding: 24px;
+        padding: 20px;
         background: var(--surface);
-        border: var(--border-weight) solid var(--border);
-        box-shadow: var(--shadow);
+        border: 1px solid var(--border);
       }
       .timeline-item:nth-child(even) { margin-top: 180px; }
       .timeline-item:nth-child(odd) { margin-bottom: 180px; }
@@ -334,59 +281,57 @@
         position: absolute;
         left: 50%;
         top: 50%;
-        width: 20px;
-        height: 20px;
-        background: var(--accent);
-        border: 4px solid var(--bg);
+        width: 10px;
+        height: 10px;
+        background: var(--red);
         border-radius: 50%;
         transform: translate(-50%, -50%);
-        box-shadow: 0 0 0 4px var(--border);
+        z-index: 5;
       }
-      .timeline-item::after {
-        content: "";
-        position: absolute;
-        left: 50%;
-        width: 2px;
-        background: var(--border);
-        height: 90px;
-        transform: translateX(-50%);
-      }
-      .timeline-item:nth-child(even)::after { bottom: 100%; }
-      .timeline-item:nth-child(odd)::after { top: 100%; }
       
       .timeline-instruction {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 12px;
-        color: var(--accent);
+        text-align: center;
+        color: var(--muted);
         font-weight: 800;
-        font-size: 0.7rem;
+        font-size: 0.65rem;
         text-transform: uppercase;
-        letter-spacing: 0.1em;
+        margin-bottom: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
       }
-      .timeline-instruction svg {
-        animation: slide-right 2s infinite;
+      
+      .custom-scrollbar {
+        height: 4px;
+        background: var(--border);
+        width: 80%;
+        margin: 0 auto;
+        border-radius: 2px;
+        position: relative;
+        overflow: hidden;
       }
-    }
-
-    @keyframes slide-right {
-      0%, 100% { transform: translateX(0); }
-      50% { transform: translateX(10px); }
+      .custom-scrollbar-thumb {
+        position: absolute;
+        height: 100%;
+        width: 30%;
+        background: var(--accent);
+        left: 0;
+      }
     }
 
     @media (max-width: 1023px) {
       .timeline-scroll {
         display: flex;
         flex-direction: column;
-        gap: 48px;
-        padding-left: 40px;
+        gap: 40px;
+        padding-left: 20px;
       }
       .timeline-line {
         top: 0;
         bottom: 0;
-        left: 8px;
-        width: 2px;
+        left: 0;
+        width: 1px;
         position: absolute;
         background: var(--border);
         z-index: 1;
@@ -397,17 +342,9 @@
         background: var(--surface);
         border: 1px solid var(--border);
       }
-      .timeline-dot {
-        position: absolute;
-        left: -40px;
-        top: 24px;
-        width: 16px;
-        height: 16px;
-        background: var(--accent);
-        border: 4px solid var(--bg);
-        border-radius: 50%;
-      }
+      .timeline-dot { display: none; }
       .timeline-instruction { display: none; }
+      .custom-scrollbar { display: none; }
     }
 
     /* Marquee */
@@ -457,7 +394,7 @@
     }
 
     @media (max-width: 768px) {
-      .carousel-image { height: 250px; }
+      .carousel-image { height: 280px; }
     }
 
     .carousel-image .img-wrapper {
@@ -607,12 +544,6 @@
       width: 100%;
     }
 
-    .project-card-link {
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-    .project-card-link:hover { transform: scale(1.02); }
-
     .masthead-info {
       display: flex;
       justify-content: space-between;
@@ -621,27 +552,63 @@
       padding-top: 24px;
     }
 
-    .project-card {
-      padding: 0;
+    @media (max-width: 768px) {
+      .masthead-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+      }
+      .masthead-info div:last-child {
+        width: 100%;
+        text-align: left !important;
+      }
+      .masthead-info div:last-child div {
+        justify-content: flex-start !important;
+      }
+    }
+
+    /* Strategy Project Cards with Thumbnails */
+    .strategy-card {
+      position: relative;
+      min-height: 250px;
+      border: var(--border-weight) solid var(--border);
+      overflow: hidden;
+      cursor: pointer;
       display: flex;
       flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: var(--surface);
+      transition: transform 0.3s ease;
+    }
+    
+    .strategy-card:hover { transform: scale(1.02); }
+
+    .strategy-thumb {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.6;
+      z-index: 1;
+    }
+    
+    .strategy-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 24px;
+      background: oklch(100% 0 0 / 70%);
+      backdrop-filter: blur(4px);
+      width: 100%;
     }
 
-    .project-content {
-      padding: var(--gutter);
-    }
-
-    .asset-label {
-      margin-top: 14px;
-      font-size: 0.65rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      font-weight: 700;
-      border-left: 3px solid var(--accent);
-      padding-left: 12px;
-      margin-bottom: 8px;
-      display: block;
-    }
+    .project-card { padding: 0; display: flex; flex-direction: column; }
+    .project-content { padding: var(--gutter); }
+    .asset-label { margin-top: 14px; font-size: 0.65rem; color: var(--muted); text-transform: uppercase; font-weight: 700; border-left: 3px solid var(--accent); padding-left: 12px; margin-bottom: 8px; display: block; }
+    .image-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--gutter); margin-top: 24px; }
 
     footer { padding: var(--gutter); background: var(--fg); color: var(--bg); display: flex; justify-content: space-between; align-items: center; }
     footer a { color: var(--bg); text-decoration: none; border-bottom: 1px solid var(--bg); }
@@ -653,7 +620,7 @@
     
     <!-- CABEÇALHO -->
     <section class="masthead">
-      <div class="meta">Portfólio Behance, Edição 2026</div>
+      <div class="meta">Portfólio, Edição 2026</div>
       <h1>Leonardo<br>Carvalho</h1>
       <div class="masthead-info">
         <div class="desc">
@@ -777,11 +744,13 @@
           
           <div class="timeline-container">
             <div class="timeline-instruction">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               Arraste para explorar a trajetória
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </div>
+            <div class="custom-scrollbar"><div class="custom-scrollbar-thumb" id="timeline-thumb"></div></div>
+            
             <div class="timeline-line"></div>
-            <div class="timeline-scroll">
+            <div class="timeline-scroll" id="timeline-scroll">
               <div class="timeline-item">
                 <div class="timeline-dot"></div>
                 <div class="meta">Set/2023</div>
@@ -881,24 +850,31 @@
       <div class="project-content" style="padding-top: 0;">
         <span class="asset-label">Projetos & Manuais</span>
         <div class="image-grid">
-          <div class="project-card-link" onclick="openProject('mppzwvfc-index.html', 'Landing Page — Entre Fios e Encantarias')">
-            <div style="background: var(--surface); padding: 40px; border: var(--border-weight) solid var(--border); display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 200px;">
+          
+          <div class="strategy-card" onclick="openProject('index.html', 'Landing Page — Entre Fios e Encantarias')">
+            <img src="thumb-landing.webp" alt="Preview Landing" class="strategy-thumb">
+            <div class="strategy-content">
               <h3 style="font-size: 1rem; color: var(--accent);">Entre Fios e Encantarias</h3>
               <p class="meta">Landing Page Interativa</p>
             </div>
           </div>
-          <div class="project-card-link" onclick="openProject('mppzxh92-Manual_de_Marca__Entre-Fios-e-Encantarias.html', 'Manual Matizes Dumont V2')">
-            <div style="background: var(--surface); padding: 40px; border: var(--border-weight) solid var(--border); display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 200px;">
+
+          <div class="strategy-card" onclick="openProject('mppzxh92-Manual_de_Marca__Entre-Fios-e-Encantarias.html', 'Manual Matizes Dumont V2')">
+            <img src="thumb-manual-matizes.webp" alt="Preview Manual" class="strategy-thumb">
+            <div class="strategy-content">
               <h3 style="font-size: 1rem; color: var(--accent);">Manual Matizes V2</h3>
               <p class="meta">Manual de Marca</p>
             </div>
           </div>
-          <div class="project-card-link" onclick="openProject('Manual de Marca - Vanda.html', 'Manual de Marca — Vanda')">
-             <div style="background: var(--surface); padding: 40px; border: var(--border-weight) solid var(--border); display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 200px;">
-              <h3 style="font-size: 1rem; color: var(--accent);">Vanda (Alpha)</h3>
+
+          <div class="strategy-card" onclick="openProject('Manual de Marca - Vanda.html', 'Manual de Marca — Vanda')">
+             <img src="thumb-manual-vanda.webp" alt="Preview Vanda" class="strategy-thumb">
+             <div class="strategy-content">
+              <h3 style="font-size: 1rem; color: var(--accent);">Manual de Marca - Vanda</h3>
               <p class="meta">Manual de Marca</p>
             </div>
           </div>
+
         </div>
       </div>
     </section>
@@ -1020,6 +996,16 @@
       populateCarousel('carousel-angular', ['mpnavbpz-angular1.webp', 'mpnavbqr-angular2.webp', 'mpnavbsd-angular3.webp', 'mpnavbtb-angular4.webp']);
       populateCarousel('carousel-metalab', ['metalab1.webp', 'metalab2.webp', 'metalab3.webp', 'metalab4.webp', 'metalab5.webp', 'metalab6.webp', 'metalab7.webp']);
       populateCarousel('carousel-matizes-social', ['matizes-novo-1.webp', 'matizes-novo-2.webp', 'matizes-novo-3.webp', 'matizes-novo-4.webp']);
+
+      // Timeline scroll thumb logic
+      const tScroll = document.getElementById('timeline-scroll');
+      const tThumb = document.getElementById('timeline-thumb');
+      if(tScroll && tThumb) {
+        tScroll.addEventListener('scroll', () => {
+          const scrollPct = (tScroll.scrollLeft / (tScroll.scrollWidth - tScroll.clientWidth)) * 70;
+          tThumb.style.left = scrollPct + '%';
+        });
+      }
     });
   </script>
 </body>

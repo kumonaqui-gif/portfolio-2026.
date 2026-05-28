@@ -197,64 +197,25 @@
       z-index: 5;
     }
 
-    /* Metrics Grid */
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: var(--gutter);
-      margin: 32px 0;
-      border-top: var(--border-weight) solid var(--border);
-      padding-top: var(--gutter);
-    }
-
-    .metric {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .metric-number {
-      font-family: var(--font-display);
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      line-height: 0.95;
-      color: var(--accent);
-      letter-spacing: -0.03em;
-    }
-
-    .metric-label {
-      font-family: var(--font-body);
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--muted);
-      max-width: 18ch;
-    }
-
-    .chart-container {
-      width: 100%;
-      height: 300px;
-      margin-bottom: var(--gutter);
-      background: var(--surface);
-      padding: 20px;
-      border: var(--border-weight) solid var(--border);
-    }
-
     /* Timeline */
     .timeline-container {
       position: relative;
-      margin-top: 20px;
-      padding-bottom: 20px;
+      margin-top: 40px;
+      padding-bottom: 40px;
     }
 
     @media (min-width: 1024px) {
       .timeline-scroll {
         display: flex;
-        overflow-x: auto;
+        overflow-x: auto !important;
         gap: 60px;
         padding: 80px 40px;
-        scrollbar-width: none;
+        scrollbar-width: thin;
+        scrollbar-color: var(--accent) var(--border);
       }
-      .timeline-scroll::-webkit-scrollbar { display: none; }
+      .timeline-scroll::-webkit-scrollbar { height: 10px; display: block; }
+      .timeline-scroll::-webkit-scrollbar-track { background: var(--bg); border: 1px solid var(--border); border-radius: 5px; }
+      .timeline-scroll::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 5px; }
       
       .timeline-line {
         top: 50%;
@@ -267,27 +228,16 @@
         z-index: 1;
       }
       .timeline-item {
-        min-width: 300px;
+        min-width: 320px;
         position: relative;
         z-index: 2;
-        padding: 20px;
+        padding: 24px;
         background: var(--surface);
         border: 1px solid var(--border);
+        box-shadow: var(--shadow);
       }
       .timeline-item:nth-child(even) { margin-top: 180px; }
       .timeline-item:nth-child(odd) { margin-bottom: 180px; }
-      
-      .timeline-dot {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        width: 10px;
-        height: 10px;
-        background: var(--red);
-        border-radius: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 5;
-      }
       
       .timeline-instruction {
         text-align: center;
@@ -295,29 +245,19 @@
         font-weight: 800;
         font-size: 0.65rem;
         text-transform: uppercase;
-        margin-bottom: 8px;
+        margin-bottom: 12px;
         display: flex;
         justify-content: center;
         align-items: center;
         gap: 8px;
+        letter-spacing: 0.1em;
       }
-      
-      .custom-scrollbar {
-        height: 4px;
-        background: var(--border);
-        width: 80%;
-        margin: 0 auto;
-        border-radius: 2px;
-        position: relative;
-        overflow: hidden;
-      }
-      .custom-scrollbar-thumb {
-        position: absolute;
-        height: 100%;
-        width: 30%;
-        background: var(--accent);
-        left: 0;
-      }
+      .timeline-instruction svg { animation: slide-right 2s infinite; }
+    }
+
+    @keyframes slide-right {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(10px); }
     }
 
     @media (max-width: 1023px) {
@@ -325,7 +265,7 @@
         display: flex;
         flex-direction: column;
         gap: 40px;
-        padding-left: 20px;
+        padding-left: 30px;
       }
       .timeline-line {
         top: 0;
@@ -342,17 +282,28 @@
         background: var(--surface);
         border: 1px solid var(--border);
       }
-      .timeline-dot { display: none; }
+      /* Ponto vermelho somente no Mobile */
+      .timeline-item::before {
+        content: "";
+        position: absolute;
+        left: -35px;
+        top: 25px;
+        width: 10px;
+        height: 10px;
+        background: var(--red);
+        border-radius: 50%;
+        z-index: 5;
+        box-shadow: 0 0 0 4px var(--bg);
+      }
       .timeline-instruction { display: none; }
-      .custom-scrollbar { display: none; }
     }
 
-    /* Marquee */
+    /* Marquee Fixed Loop */
     .marquee {
       background: var(--fg);
       color: var(--bg);
-      padding: 12px 0;
-      font-size: 0.8rem;
+      padding: 14px 0;
+      font-size: 0.85rem;
       font-weight: 800;
       text-transform: uppercase;
       overflow: hidden;
@@ -360,8 +311,15 @@
       border-bottom: var(--border-weight) solid var(--border);
     }
 
-    .marquee-content { display: inline-block; animation: marquee 40s linear infinite; }
-    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .marquee-content { 
+      display: inline-block; 
+      animation: marquee-scroll 60s linear infinite; 
+    }
+
+    @keyframes marquee-scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
 
     /* Infinite Carousel */
     .carousel-row {
@@ -424,25 +382,9 @@
       background: var(--surface);
     }
     
-    .static-item {
-      cursor: pointer;
-    }
-    
-    .static-item .img-wrapper {
-      width: 100%;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
-    }
-    
-    .static-item img {
-      width: 100%;
-      height: auto;
-      object-fit: contain;
-      box-shadow: none;
-      transition: transform 0.3s ease;
-    }
-    
+    .static-item { cursor: pointer; }
+    .static-item .img-wrapper { width: 100%; overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+    .static-item img { width: 100%; height: auto; object-fit: contain; box-shadow: none; transition: transform 0.3s ease; }
     .static-item:hover img { transform: scale(1.05); }
 
     /* Modals */
@@ -494,12 +436,9 @@
       transition: all 0.2s ease;
     }
     
-    .modal-close:hover {
-      background: var(--bg);
-      color: var(--fg);
-    }
+    .modal-close:hover { background: var(--bg); color: var(--fg); }
 
-    /* Fullscreen Project Viewer (Iframe) */
+    /* Project Viewer */
     #project-viewer {
       position: fixed;
       top: 0;
@@ -533,16 +472,9 @@
       transition: all 0.2s ease;
     }
     
-    .viewer-close:hover {
-      background: var(--bg);
-      color: var(--fg);
-    }
+    .viewer-close:hover { background: var(--bg); color: var(--fg); }
 
-    #viewer-frame {
-      flex: 1;
-      border: none;
-      width: 100%;
-    }
+    #viewer-frame { flex: 1; border: none; width: 100%; }
 
     .masthead-info {
       display: flex;
@@ -563,14 +495,17 @@
         text-align: left !important;
       }
       .masthead-info div:last-child div {
-        justify-content: flex-start !important;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
       }
+      .btn { text-align: center; }
     }
 
     /* Strategy Project Cards with Thumbnails */
     .strategy-card {
       position: relative;
-      min-height: 250px;
+      min-height: 300px;
       border: var(--border-weight) solid var(--border);
       overflow: hidden;
       cursor: pointer;
@@ -611,6 +546,10 @@
     .image-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--gutter); margin-top: 24px; }
 
     footer { padding: var(--gutter); background: var(--fg); color: var(--bg); display: flex; justify-content: space-between; align-items: center; }
+    @media (max-width: 768px) {
+      footer { flex-direction: column; align-items: flex-start; gap: 24px; }
+      footer div:last-child { text-align: left !important; }
+    }
     footer a { color: var(--bg); text-decoration: none; border-bottom: 1px solid var(--bg); }
   </style>
 </head>
@@ -654,7 +593,7 @@
     <!-- MARQUEE -->
     <div class="marquee">
       <div class="marquee-content">
-        ADOBE PHOTOSHOP : ADOBE PREMIERE : ADOBE ILLUSTRATOR : STORYTELLING : IMPRESSÃO FINE ART : TRATAMENTO DE IMAGEM : CURADORIA CULTURAL : PLANEJAMENTO EDITORIAL : COORDENAÇÃO DE CONTEÚDO : CALENDÁRIO EDITORIAL : GESTÃO DE ECOSSISTEMA DIGITAL : LANÇAMENTOS : ANÁLISE DE MÉTRICAS : INTELIGÊNCIA ARTIFICIAL APLICADA : MANUAIS DE MARCA : COPYWRITING : PERSONAS : ADOBE PHOTOSHOP : ADOBE PREMIERE : ADOBE ILLUSTRATOR : STORYTELLING : IMPRESSÃO FINE ART : TRATAMENTO DE IMAGEM : CURADORIA CULTURAL : PLANEJAMENTO EDITORIAL : COORDENAÇÃO DE CONTEÚDO : CALENDÁRIO EDITORIAL : GESTÃO DE ECOSSISTEMA DIGITAL : LANÇAMENTOS : ANÁLISE DE MÉTRICAS : INTELIGÊNCIA ARTIFICIAL APLICADA : MANUAIS DE MARCA : COPYWRITING : PERSONAS :
+        ADOBE PHOTOSHOP · ADOBE PREMIERE · ADOBE ILLUSTRATOR · STORYTELLING · IMPRESSÃO FINE ART · TRATAMENTO DE IMAGEM · CURADORIA CULTURAL · PLANEJAMENTO EDITORIAL · COORDENAÇÃO DE CONTEÚDO · CALENDÁRIO EDITORIAL · GESTÃO DE ECOSSISTEMA DIGITAL · LANÇAMENTOS · ANÁLISE DE MÉTRICAS · INTELIGÊNCIA ARTIFICIAL APLICADA · MANUAIS DE MARCA · COPYWRITING · PERSONAS · ADOBE PHOTOSHOP · ADOBE PREMIERE · ADOBE ILLUSTRATOR · STORYTELLING · IMPRESSÃO FINE ART · TRATAMENTO DE IMAGEM · CURADORIA CULTURAL · PLANEJAMENTO EDITORIAL · COORDENAÇÃO DE CONTEÚDO · CALENDÁRIO EDITORIAL · GESTÃO DE ECOSSISTEMA DIGITAL · LANÇAMENTOS · ANÁLISE DE MÉTRICAS · INTELIGÊNCIA ARTIFICIAL APLICADA · MANUAIS DE MARCA · COPYWRITING · PERSONAS ·
       </div>
     </div>
 
@@ -670,8 +609,8 @@
       
       <div class="project-content" style="padding-top: 0;">
         <div class="comparison-slider">
-          <img src="mpnavc7k-Tratamento-de-imagem---comparativo-1.1.webp" alt="Original">
-          <img src="mpnavc9d-Tratamento-de-imagem---comparativo-1.2.webp" alt="Editado" class="image-after">
+          <img src="Tratamento de imagem - comparativo 1.1.webp" alt="Original">
+          <img src="Tratamento de imagem - comparativo 1.2.webp" alt="Editado" class="image-after">
           <div class="slider-handle"></div>
           <input type="range" min="0" max="100" value="50" class="slider-input" oninput="handleSlider(this)" aria-label="Comparar antes e depois">
           <span class="comparison-label" style="left: 12px;">Original</span>
@@ -679,8 +618,8 @@
         </div>
 
         <div class="comparison-slider">
-          <img src="mpnavca3-Tratamento-de-imagem---comparativo-2.1.webp" alt="Original">
-          <img src="mpnavcam-Tratamento-de-imagem---comparativo-2.2.webp" alt="Editado" class="image-after">
+          <img src="Tratamento de imagem - comparativo 2.1.webp" alt="Original">
+          <img src="Tratamento de imagem - comparativo 2.2.webp" alt="Editado" class="image-after">
           <div class="slider-handle"></div>
           <input type="range" min="0" max="100" value="50" class="slider-input" oninput="handleSlider(this)" aria-label="Comparar antes e depois">
           <span class="comparison-label" style="left: 12px;">Original</span>
@@ -688,8 +627,8 @@
         </div>
 
         <div class="comparison-slider">
-          <img src="mpnavdcv-Tratamento-de-imagem---comparativo-3.1.webp" alt="Original">
-          <img src="mpnavdde-Tratamento-de-imagem---comparativo-3.2.webp" alt="Editado" class="image-after">
+          <img src="Tratamento de imagem - comparativo 3.1.webp" alt="Original">
+          <img src="Tratamento de imagem - comparativo 3.2.webp" alt="Editado" class="image-after">
           <div class="slider-handle"></div>
           <input type="range" min="0" max="100" value="50" class="slider-input" oninput="handleSlider(this)" aria-label="Comparar antes e depois">
           <span class="comparison-label" style="left: 12px;">Original</span>
@@ -743,56 +682,48 @@
           <span class="asset-label">Linha do Tempo de Lançamentos</span>
           
           <div class="timeline-container">
-            <div class="timeline-instruction">
-              Arraste para explorar a trajetória
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </div>
-            <div class="custom-scrollbar"><div class="custom-scrollbar-thumb" id="timeline-thumb"></div></div>
-            
             <div class="timeline-line"></div>
             <div class="timeline-scroll" id="timeline-scroll">
               <div class="timeline-item">
-                <div class="timeline-dot"></div>
                 <div class="meta">Set/2023</div>
                 <h3>Oficina Borde Folhas</h3>
                 <img src="timeline1.webp" alt="Oficina Borde Folhas 2023" style="margin-top: 10px;">
               </div>
               <div class="timeline-item">
-                <div class="timeline-dot"></div>
                 <div class="meta">Fev/2024</div>
-                <h3>Da Tinta à Linha</h3>
+                <h3>Oficina Da Tinta à Linha</h3>
                 <img src="timeline2.webp" alt="Oficina Da Tinta à Linha" style="margin-top: 10px;">
               </div>
               <div class="timeline-item">
-                <div class="timeline-dot"></div>
                 <div class="meta">Jun/2024</div>
-                <h3>Bordando sua História</h3>
+                <h3>Oficina Bordando sua História</h3>
                 <img src="timeline3.webp" alt="Bordando sua História 2024" style="margin-top: 10px;">
               </div>
               <div class="timeline-item">
-                <div class="timeline-dot"></div>
                 <div class="meta">Ago/2024</div>
-                <h3>Aquarelando Águas</h3>
+                <h3>MiniCurso Aquarelando e Bordando Águas</h3>
                 <img src="timeline4.webp" alt="MiniCurso Aquarelando e Bordando Águas" style="margin-top: 10px;">
               </div>
               <div class="timeline-item">
-                <div class="timeline-dot"></div>
                 <div class="meta">Abr/2025</div>
-                <h3>Expressões Humanas</h3>
+                <h3>Oficina Expressões Humanas</h3>
                 <img src="timeline5.webp" alt="Oficina Bordando Expressões Humanas" style="margin-top: 10px;">
               </div>
               <div class="timeline-item">
-                <div class="timeline-dot"></div>
                 <div class="meta">Jun/2025</div>
-                <h3>Bordando Sonhos</h3>
+                <h3>Oficina Bordando Sonhos</h3>
                 <img src="timeline6.webp" alt="Oficina Bordando Sonhos" style="margin-top: 10px;">
               </div>
               <div class="timeline-item">
-                <div class="timeline-dot"></div>
                 <div class="meta">Nov/2025</div>
-                <h3>Borde Garças</h3>
+                <h3>Oficina Borde Garças</h3>
                 <img src="timeline7.webp" alt="Oficina Borde Garças" style="margin-top: 10px;">
               </div>
+            </div>
+            
+            <div class="timeline-instruction">
+              Arraste para explorar os lançamentos
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </div>
           </div>
         </div>
@@ -811,11 +742,11 @@
 
       <div class="project-content" style="padding-bottom: 0;"><span class="asset-label">Vazk Comunicação</span></div>
       <div class="static-grid" id="grid-vazk">
-         <div class="static-item" onclick="openLightbox('mpnavde4-vazk1.webp')">
-            <div class="img-wrapper"><img src="mpnavde4-vazk1.webp" alt="Vazk 1"></div>
+         <div class="static-item" onclick="openLightbox('vazk1.webp')">
+            <div class="img-wrapper"><img src="vazk1.webp" alt="Vazk 1"></div>
          </div>
-         <div class="static-item" onclick="openLightbox('mpnavdep-vazk2.webp')">
-            <div class="img-wrapper"><img src="mpnavdep-vazk2.webp" alt="Vazk 2"></div>
+         <div class="static-item" onclick="openLightbox('vazk2.webp')">
+            <div class="img-wrapper"><img src="vazk2.webp" alt="Vazk 2"></div>
          </div>
       </div>
 
@@ -830,7 +761,7 @@
       </div>
 
       <div class="carousel-row">
-        <div class="project-content" style="padding-bottom: 0;"><span class="asset-label">Matizes Dumont (Social)</span></div>
+        <div class="project-content" style="padding-bottom: 0;"><span class="asset-label">Matizes Dumont</span></div>
         <div class="carousel-inner" id="carousel-matizes-social" style="animation-direction: reverse;"></div>
       </div>
     </section>
@@ -859,18 +790,18 @@
             </div>
           </div>
 
-          <div class="strategy-card" onclick="openProject('mppzxh92-Manual_de_Marca__Entre-Fios-e-Encantarias.html', 'Manual Matizes Dumont V2')">
+          <div class="strategy-card" onclick="openProject('Manual_de_Marca__Entre Fios e Encantarias.html', 'Manual Matizes Dumont V2')">
             <img src="thumb-manual-matizes.webp" alt="Preview Manual" class="strategy-thumb">
             <div class="strategy-content">
-              <h3 style="font-size: 1rem; color: var(--accent);">Manual Matizes V2</h3>
+              <h3 style="font-size: 1rem; color: var(--accent);">Manual Projeto "Entre Fios e Encantarias"</h3>
               <p class="meta">Manual de Marca</p>
             </div>
           </div>
 
-          <div class="strategy-card" onclick="openProject('Manual de Marca - Vanda.html', 'Manual de Marca — Vanda')">
+          <div class="strategy-card" onclick="openProject('mppzynt9-Manual-de-Marca---Vanda.html', 'Manual de Marca — Vanda')">
              <img src="thumb-manual-vanda.webp" alt="Preview Vanda" class="strategy-thumb">
              <div class="strategy-content">
-              <h3 style="font-size: 1rem; color: var(--accent);">Manual de Marca - Vanda</h3>
+              <h3 style="font-size: 1rem; color: var(--accent);">Manual Vanda Mendes</h3>
               <p class="meta">Manual de Marca</p>
             </div>
           </div>
@@ -885,7 +816,7 @@
       </div>
       <div style="text-align: right;">
         <p><a href="mailto:le0nardoc@hotmail.com">le0nardoc@hotmail.com</a></p>
-        <p><a href="tel:+5561983613016">+55 61 98361-3016</a></p>
+        <p><a href="https://api.whatsapp.com/send/?phone=5561983613016">+55 61 98361-3016</a></p>
         <p><a href="https://www.linkedin.com/in/leonardo-carvalho-943124a4/">LinkedIn</a></p>
       </div>
     </footer>
@@ -899,7 +830,7 @@
     </div>
   </div>
 
-  <!-- Project Viewer (Iframe) -->
+  <!-- Project Viewer -->
   <div id="project-viewer">
     <div class="viewer-header">
       <span id="viewer-title">Visualização do Projeto</span>
@@ -993,19 +924,9 @@
           }
       });
 
-      populateCarousel('carousel-angular', ['mpnavbpz-angular1.webp', 'mpnavbqr-angular2.webp', 'mpnavbsd-angular3.webp', 'mpnavbtb-angular4.webp']);
+      populateCarousel('carousel-angular', ['angular1.webp', 'angular2.webp', 'angular3.webp', 'angular4.webp', 'angular5.1.webp', 'angular5.2.webp', 'angular5.3.webp']);
       populateCarousel('carousel-metalab', ['metalab1.webp', 'metalab2.webp', 'metalab3.webp', 'metalab4.webp', 'metalab5.webp', 'metalab6.webp', 'metalab7.webp']);
       populateCarousel('carousel-matizes-social', ['matizes-novo-1.webp', 'matizes-novo-2.webp', 'matizes-novo-3.webp', 'matizes-novo-4.webp']);
-
-      // Timeline scroll thumb logic
-      const tScroll = document.getElementById('timeline-scroll');
-      const tThumb = document.getElementById('timeline-thumb');
-      if(tScroll && tThumb) {
-        tScroll.addEventListener('scroll', () => {
-          const scrollPct = (tScroll.scrollLeft / (tScroll.scrollWidth - tScroll.clientWidth)) * 70;
-          tThumb.style.left = scrollPct + '%';
-        });
-      }
     });
   </script>
 </body>

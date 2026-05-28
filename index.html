@@ -1,6 +1,5 @@
 <!doctype html>
-<html lang="pt-br" dir="ltr">
-<head>
+<html lang="pt-br" dir="ltr"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Leonardo Carvalho, Portfólio 2026</title>
@@ -197,11 +196,61 @@
       z-index: 5;
     }
 
+    /* Metrics Grid (Fixed) */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--gutter);
+      margin: 32px 0;
+      border-top: var(--border-weight) solid var(--border);
+      padding-top: var(--gutter);
+    }
+
+    @media (max-width: 1024px) {
+      .metrics-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 640px) {
+      .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .metric {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .metric-number {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      line-height: 0.95;
+      color: var(--accent);
+      letter-spacing: -0.03em;
+    }
+
+    .metric-label {
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      max-width: none; /* Let it wrap naturally */
+    }
+
+    .chart-container {
+      width: 100%;
+      height: 300px;
+      margin-bottom: var(--gutter);
+      background: var(--surface);
+      padding: 20px;
+      border: var(--border-weight) solid var(--border);
+    }
+
     /* Timeline */
     .timeline-container {
       position: relative;
       margin-top: 40px;
-      padding-bottom: 40px;
+      padding-bottom: 20px;
     }
 
     @media (min-width: 1024px) {
@@ -209,13 +258,11 @@
         display: flex;
         overflow-x: auto !important;
         gap: 60px;
-        padding: 80px 40px;
+        padding: 40px 40px 80px 40px;
         scrollbar-width: thin;
         scrollbar-color: var(--accent) var(--border);
       }
-      .timeline-scroll::-webkit-scrollbar { height: 10px; display: block; }
-      .timeline-scroll::-webkit-scrollbar-track { background: var(--bg); border: 1px solid var(--border); border-radius: 5px; }
-      .timeline-scroll::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 5px; }
+      .timeline-scroll::-webkit-scrollbar { height: 10px; }
       
       .timeline-line {
         top: 50%;
@@ -243,21 +290,16 @@
         text-align: center;
         color: var(--muted);
         font-weight: 800;
-        font-size: 0.65rem;
+        font-size: 0.7rem;
         text-transform: uppercase;
-        margin-bottom: 12px;
+        margin-bottom: 20px;
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 8px;
+        gap: 12px;
         letter-spacing: 0.1em;
       }
       .timeline-instruction svg { animation: slide-right 2s infinite; }
-    }
-
-    @keyframes slide-right {
-      0%, 100% { transform: translateX(0); }
-      50% { transform: translateX(10px); }
     }
 
     @media (max-width: 1023px) {
@@ -282,7 +324,6 @@
         background: var(--surface);
         border: 1px solid var(--border);
       }
-      /* Ponto vermelho somente no Mobile */
       .timeline-item::before {
         content: "";
         position: absolute;
@@ -298,27 +339,30 @@
       .timeline-instruction { display: none; }
     }
 
-    /* Marquee Fixed Loop */
+    /* Marquee Infinite Fixed */
     .marquee {
       background: var(--fg);
       color: var(--bg);
-      padding: 14px 0;
+      padding: 16px 0;
       font-size: 0.85rem;
       font-weight: 800;
       text-transform: uppercase;
       overflow: hidden;
       white-space: nowrap;
       border-bottom: var(--border-weight) solid var(--border);
+      display: flex;
     }
 
     .marquee-content { 
       display: inline-block; 
-      animation: marquee-scroll 60s linear infinite; 
+      flex-shrink: 0;
+      padding-right: 20px;
+      animation: marquee-scroll 40s linear infinite; 
     }
 
     @keyframes marquee-scroll {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
     }
 
     /* Infinite Carousel */
@@ -476,6 +520,7 @@
 
     #viewer-frame { flex: 1; border: none; width: 100%; }
 
+    /* Hero Responsive */
     .masthead-info {
       display: flex;
       justify-content: space-between;
@@ -488,7 +533,7 @@
       .masthead-info {
         flex-direction: column;
         align-items: flex-start;
-        gap: 20px;
+        gap: 24px;
       }
       .masthead-info div:last-child {
         width: 100%;
@@ -595,12 +640,15 @@
       <div class="marquee-content">
         ADOBE PHOTOSHOP · ADOBE PREMIERE · ADOBE ILLUSTRATOR · STORYTELLING · IMPRESSÃO FINE ART · TRATAMENTO DE IMAGEM · CURADORIA CULTURAL · PLANEJAMENTO EDITORIAL · COORDENAÇÃO DE CONTEÚDO · CALENDÁRIO EDITORIAL · GESTÃO DE ECOSSISTEMA DIGITAL · LANÇAMENTOS · ANÁLISE DE MÉTRICAS · INTELIGÊNCIA ARTIFICIAL APLICADA · MANUAIS DE MARCA · COPYWRITING · PERSONAS · ADOBE PHOTOSHOP · ADOBE PREMIERE · ADOBE ILLUSTRATOR · STORYTELLING · IMPRESSÃO FINE ART · TRATAMENTO DE IMAGEM · CURADORIA CULTURAL · PLANEJAMENTO EDITORIAL · COORDENAÇÃO DE CONTEÚDO · CALENDÁRIO EDITORIAL · GESTÃO DE ECOSSISTEMA DIGITAL · LANÇAMENTOS · ANÁLISE DE MÉTRICAS · INTELIGÊNCIA ARTIFICIAL APLICADA · MANUAIS DE MARCA · COPYWRITING · PERSONAS ·
       </div>
+      <div class="marquee-content">
+        ADOBE PHOTOSHOP · ADOBE PREMIERE · ADOBE ILLUSTRATOR · STORYTELLING · IMPRESSÃO FINE ART · TRATAMENTO DE IMAGEM · CURADORIA CULTURAL · PLANEJAMENTO EDITORIAL · COORDENAÇÃO DE CONTEÚDO · CALENDÁRIO EDITORIAL · GESTÃO DE ECOSSISTEMA DIGITAL · LANÇAMENTOS · ANÁLISE DE MÉTRICAS · INTELIGÊNCIA ARTIFICIAL APLICADA · MANUAIS DE MARCA · COPYWRITING · PERSONAS · ADOBE PHOTOSHOP · ADOBE PREMIERE · ADOBE ILLUSTRATOR · STORYTELLING · IMPRESSÃO FINE ART · TRATAMENTO DE IMAGEM · CURADORIA CULTURAL · PLANEJAMENTO EDITORIAL · COORDENAÇÃO DE CONTEÚDO · CALENDÁRIO EDITORIAL · GESTÃO DE ECOSSISTEMA DIGITAL · LANÇAMENTOS · ANÁLISE DE MÉTRICAS · INTELIGÊNCIA ARTIFICIAL APLICADA · MANUAIS DE MARCA · COPYWRITING · PERSONAS ·
+      </div>
     </div>
 
     <!-- SEÇÃO 01: TRATAMENTO DE IMAGENS -->
     <section class="project-card">
       <div class="project-content">
-        <span class="kicker">01 / Edição & Impressão FineArt</span>
+        <span class="kicker">01 / Edição &amp; Impressão FineArt</span>
         <h2>Tratamento de<br>Imagens</h2>
         <div class="desc">
           Anos de trabalho com fotógrafos e laboratórios FineArt moldaram um olhar técnico e estético para além do digital: calibração de cor, fidelidade tonal e intenção narrativa em cada ajuste. Os comparativos abaixo mostram o processo aplicado a diferentes finalidades: impressão de alta qualidade, publicação digital e comunicação visual de marca.
@@ -640,7 +688,7 @@
     <!-- SEÇÃO 02: MATIZES DUMONT -->
     <section class="project-card">
       <div class="project-content">
-        <span class="kicker">02 / Coordenação de Conteúdo, Social Media & Lançamentos</span>
+        <span class="kicker">02 / Coordenação de Conteúdo, Social Media &amp; Lançamentos</span>
         <h2>Matizes<br>Dumont</h2>
         <div class="desc">
           <p><strong>O projeto:</strong> O Matizes Dumont é o coletivo de Bordado Livre formado pelas artistas da Família Dumont, referência no Brasil e no Mundo quando o assunto é bordado. Em setembro de 2022, assumi a comunicação digital completa: encontrei uma presença ativa mas focada quase exclusivamente em comercial, sem estratégia editorial definida.</p>
@@ -682,11 +730,16 @@
           <span class="asset-label">Linha do Tempo de Lançamentos</span>
           
           <div class="timeline-container">
+            <div class="timeline-instruction">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+              Arraste para explorar os lançamentos
+            </div>
+            
             <div class="timeline-line"></div>
             <div class="timeline-scroll" id="timeline-scroll">
               <div class="timeline-item">
                 <div class="meta">Set/2023</div>
-                <h3>Oficina Borde Folhas</h3>
+                <h3>Oficina Borde Folhas 2023</h3>
                 <img src="timeline1.webp" alt="Oficina Borde Folhas 2023" style="margin-top: 10px;">
               </div>
               <div class="timeline-item">
@@ -696,17 +749,17 @@
               </div>
               <div class="timeline-item">
                 <div class="meta">Jun/2024</div>
-                <h3>Oficina Bordando sua História</h3>
+                <h3>Bordando sua História 2024</h3>
                 <img src="timeline3.webp" alt="Bordando sua História 2024" style="margin-top: 10px;">
               </div>
               <div class="timeline-item">
                 <div class="meta">Ago/2024</div>
-                <h3>MiniCurso Aquarelando e Bordando Águas</h3>
+                <h3>MiniCurso Aquarelando e Bordando Águas"</h3>
                 <img src="timeline4.webp" alt="MiniCurso Aquarelando e Bordando Águas" style="margin-top: 10px;">
               </div>
               <div class="timeline-item">
                 <div class="meta">Abr/2025</div>
-                <h3>Oficina Expressões Humanas</h3>
+                <h3>Oficina Bordando Expressões Humanas</h3>
                 <img src="timeline5.webp" alt="Oficina Bordando Expressões Humanas" style="margin-top: 10px;">
               </div>
               <div class="timeline-item">
@@ -720,11 +773,6 @@
                 <img src="timeline7.webp" alt="Oficina Borde Garças" style="margin-top: 10px;">
               </div>
             </div>
-            
-            <div class="timeline-instruction">
-              Arraste para explorar os lançamentos
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </div>
           </div>
         </div>
       </div>
@@ -733,8 +781,8 @@
     <!-- SEÇÃO 03: COMUNICAÇÃO VISUAL -->
     <section class="project-card">
       <div class="project-content">
-        <span class="kicker">03 / Comunicação Visual & Design Gráfico</span>
-        <h2>Criativos &<br>Identidade</h2>
+        <span class="kicker">03 / Comunicação Visual &amp; Design Gráfico</span>
+        <h2>Criativos &amp;<br>Identidade</h2>
         <div class="desc">
           Desenvolvimento de identidade visual, criativos para redes sociais e materiais gráficos para diferentes marcas: do briefing à entrega, com consistência entre canais e aderência ao posicionamento de cada cliente.
         </div>
@@ -761,7 +809,7 @@
       </div>
 
       <div class="carousel-row">
-        <div class="project-content" style="padding-bottom: 0;"><span class="asset-label">Matizes Dumont</span></div>
+        <div class="project-content" style="padding-bottom: 0;"><span class="asset-label">Matizes Dumont (Social)</span></div>
         <div class="carousel-inner" id="carousel-matizes-social" style="animation-direction: reverse;"></div>
       </div>
     </section>
@@ -769,8 +817,8 @@
     <!-- SEÇÃO 04: IA APLICADA -->
     <section class="project-card">
       <div class="project-content">
-        <span class="kicker">04 / Estratégia, Conteúdo & IA Aplicada</span>
-        <h2>Estrutura &<br>Estratégia</h2>
+        <span class="kicker">04 / Estratégia, Conteúdo &amp; IA Aplicada</span>
+        <h2>Estrutura &amp;<br>Estratégia</h2>
         <div class="desc">
           <p>Uso de inteligência artificial como camada de metodologia: não como substituição ao processo criativo, mas como acelerador de entrega com qualidade estratégica. Aplicado em criação de personas, copy, manuais de marca e estruturas de site.</p>
           <br>
@@ -779,13 +827,13 @@
       </div>
 
       <div class="project-content" style="padding-top: 0;">
-        <span class="asset-label">Projetos & Manuais</span>
+        <span class="asset-label">Projetos &amp; Manuais</span>
         <div class="image-grid">
           
           <div class="strategy-card" onclick="openProject('index.html', 'Landing Page — Entre Fios e Encantarias')">
             <img src="thumb-landing.webp" alt="Preview Landing" class="strategy-thumb">
             <div class="strategy-content">
-              <h3 style="font-size: 1rem; color: var(--accent);">Entre Fios e Encantarias</h3>
+              <h3 style="font-size: 1rem; color: var(--fg; font-weight: 800;">Entre Fios e Encantarias</h3>
               <p class="meta">Landing Page Interativa</p>
             </div>
           </div>
@@ -793,15 +841,15 @@
           <div class="strategy-card" onclick="openProject('Manual_de_Marca__Entre Fios e Encantarias.html', 'Manual Matizes Dumont V2')">
             <img src="thumb-manual-matizes.webp" alt="Preview Manual" class="strategy-thumb">
             <div class="strategy-content">
-              <h3 style="font-size: 1rem; color: var(--accent);">Manual Projeto "Entre Fios e Encantarias"</h3>
+              <h3 style="font-size: 1rem; color: var(--fg); font-weight: 800;">Manual da Oficina "Entre Fios e Encantarias" V2</h3>
               <p class="meta">Manual de Marca</p>
             </div>
           </div>
 
-          <div class="strategy-card" onclick="openProject('mppzynt9-Manual-de-Marca---Vanda.html', 'Manual de Marca — Vanda')">
+          <div class="strategy-card" onclick="openProject('Manual de Marca - Vanda.html', 'Manual de Marca — Vanda')">
              <img src="thumb-manual-vanda.webp" alt="Preview Vanda" class="strategy-thumb">
              <div class="strategy-content">
-              <h3 style="font-size: 1rem; color: var(--accent);">Manual Vanda Mendes</h3>
+              <h3 style="font-size: 1rem; color: var(--fg); font-weight: 800;">Manual Vanda Mendes</h3>
               <p class="meta">Manual de Marca</p>
             </div>
           </div>
@@ -817,7 +865,7 @@
       <div style="text-align: right;">
         <p><a href="mailto:le0nardoc@hotmail.com">le0nardoc@hotmail.com</a></p>
         <p><a href="https://api.whatsapp.com/send/?phone=5561983613016">+55 61 98361-3016</a></p>
-        <p><a href="https://www.linkedin.com/in/leonardo-carvalho-943124a4/">LinkedIn</a></p>
+        <p style=""><a href="https://www.linkedin.com/in/leonardo-carvalho-943124a4/">LinkedIn</a></p>
       </div>
     </footer>
   </main>
@@ -929,5 +977,6 @@
       populateCarousel('carousel-matizes-social', ['matizes-novo-1.webp', 'matizes-novo-2.webp', 'matizes-novo-3.webp', 'matizes-novo-4.webp']);
     });
   </script>
-</body>
-</html>
+
+
+</body></html>

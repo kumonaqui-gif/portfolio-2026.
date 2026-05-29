@@ -248,118 +248,96 @@
 
     /* Timeline */
     .timeline-container {
-  position: relative;
-  margin-top: 40px;
-  padding-bottom: 20px;
-}
+      position: relative;
+      margin-top: 40px;
+      padding-bottom: 20px;
+    }
 
-@media (min-width: 1024px) {
-  /* Scroll Invisível mas funcional */
-  .timeline-scroll {
-    display: flex;
-    overflow-x: auto !important;
-    gap: 40px;
-    padding: 60px 40px 40px 40px;
-    scrollbar-width: none; /* Oculta no Firefox */
-  }
-  .timeline-scroll::-webkit-scrollbar { display: none; } /* Oculta no Chrome/Safari */
+    @media (min-width: 1024px) {
+      .timeline-scroll {
+        display: flex;
+        overflow-x: auto !important;
+        gap: 60px;
+        padding: 40px 40px 80px 40px;
+        scrollbar-width: thin;
+        scrollbar-color: var(--accent) var(--border);
+      }
+      .timeline-scroll::-webkit-scrollbar { height: 10px; }
+      
+      .timeline-line {
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 1px;
+        transform: translateY(-50%);
+        position: absolute;
+        background: var(--border);
+        z-index: 1;
+      }
+      .timeline-item {
+        min-width: 320px;
+        position: relative;
+        z-index: 2;
+        padding: 24px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+      }
+      .timeline-item:nth-child(even) { margin-top: 180px; }
+      .timeline-item:nth-child(odd) { margin-bottom: 180px; }
+      
+      .timeline-instruction {
+        text-align: center;
+        color: var(--muted);
+        font-weight: 800;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        letter-spacing: 0.1em;
+      }
+      .timeline-instruction svg { animation: slide-right 2s infinite; }
+    }
 
-  .timeline-line {
-    top: 45%; /* Ajustado para centralizar entre os boxes */
-    left: 0; right: 0;
-    height: 1px;
-    position: absolute;
-    background: var(--border);
-    z-index: 1;
-  }
-
-  .timeline-item {
-    min-width: 320px;
-    position: relative;
-    z-index: 2;
-    padding: 24px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow);
-  }
-
-  /* Alternância dos boxes */
-  .timeline-item:nth-child(even) { margin-top: 160px; }
-  .timeline-item:nth-child(odd) { margin-bottom: 160px; }
-
-  /* REMOVIDO: .timeline-item::before (bolinha vermelha desktop) */
-
-  /* Instrução sobre a barra */
-  .timeline-instruction {
-    text-align: center;
-    color: var(--muted);
-    font-weight: 800;
-    font-size: 0.65rem;
-    text-transform: uppercase;
-    margin: 32px 0 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    letter-spacing: 0.1em;
-  }
-  .timeline-instruction svg { animation: slide-right 2s infinite; }
-
-  /* Barra de Scroll Estilo index-5 */
-  .custom-scrollbar {
-    height: 6px;
-    background: var(--border);
-    width: 60%;
-    margin: 0 auto;
-    border-radius: 10px;
-    position: relative;
-    overflow: hidden;
-  }
-  .custom-scrollbar-thumb {
-    position: absolute;
-    height: 100%;
-    width: 30%;
-    background: var(--accent);
-    left: 0;
-    border-radius: 10px;
-    transition: left 0.1s ease-out;
-  }
-}
-
-@media (max-width: 1023px) {
-  .timeline-scroll {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    padding-left: 35px;
-  }
-  .timeline-line {
-    top: 0; bottom: 0; left: 0;
-    width: 1px;
-    position: absolute;
-    background: var(--border);
-    z-index: 1;
-  }
-  .timeline-item {
-    position: relative;
-    padding: 20px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-  }
-  /* Ponto vermelho RETORNADO apenas para Mobile */
-  .timeline-item::before {
-    content: "";
-    position: absolute;
-    left: -40px;
-    top: 25px;
-    width: 10px; height: 10px;
-    background: var(--red);
-    border-radius: 50%;
-    z-index: 5;
-    box-shadow: 0 0 0 4px var(--bg);
-  }
-  .timeline-instruction, .custom-scrollbar { display: none; }
-}
+    @media (max-width: 1023px) {
+      .timeline-scroll {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+        padding-left: 30px;
+      }
+      .timeline-line {
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 1px;
+        position: absolute;
+        background: var(--border);
+        z-index: 1;
+      }
+      .timeline-item {
+        position: relative;
+        padding: 20px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+      }
+      .timeline-item::before {
+        content: "";
+        position: absolute;
+        left: -35px;
+        top: 25px;
+        width: 10px;
+        height: 10px;
+        background: var(--red);
+        border-radius: 50%;
+        z-index: 5;
+        box-shadow: 0 0 0 4px var(--bg);
+      }
+      .timeline-instruction { display: none; }
+    }
 
     /* Marquee Infinite Fixed */
     .marquee {
@@ -751,7 +729,8 @@
         <div class="project-content" style="padding: var(--gutter) 0;">
           <span class="asset-label">Linha do Tempo de Lançamentos</span>
           
-          
+          <div class="timeline-container">
+                     
             <div class="timeline-line"></div>
             <div class="timeline-scroll" id="timeline-scroll">
               <div class="timeline-item">
@@ -766,12 +745,12 @@
               </div>
               <div class="timeline-item">
                 <div class="meta">Jun/2024</div>
-                <h3>Bordando sua História 2024</h3>
+                <h3>Oficina Bordando sua História 2024</h3>
                 <img src="timeline3.webp" alt="Bordando sua História 2024" style="margin-top: 10px;">
               </div>
               <div class="timeline-item">
                 <div class="meta">Ago/2024</div>
-                <h3>MiniCurso Aquarelando e Bordando Águas"</h3>
+                <h3>MiniCurso Aquarelando e Bordando Águas</h3>
                 <img src="timeline4.webp" alt="MiniCurso Aquarelando e Bordando Águas" style="margin-top: 10px;">
               </div>
               <div class="timeline-item">
@@ -789,17 +768,11 @@
                 <h3>Oficina Borde Garças</h3>
                 <img src="timeline7.webp" alt="Oficina Borde Garças" style="margin-top: 10px;">
               </div>
+              <div class="timeline-instruction">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+              Arraste para explorar os lançamentos
             </div>
-          <div class="timeline-instruction">
-    Arraste para explorar os lançamentos
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
-  </div>
-          
-  <!-- Barra de Scroll Customizada -->
-  <div class="custom-scrollbar">
-    <div class="custom-scrollbar-thumb" id="timeline-thumb"></div>
-  </div>
-</div>
+            </div>
           </div>
         </div>
       </div>
@@ -818,10 +791,10 @@
       <div class="project-content" style="padding-bottom: 0;"><span class="asset-label">Vazk Comunicação</span></div>
       <div class="static-grid" id="grid-vazk">
          <div class="static-item" onclick="openLightbox('vazk1.webp')">
-            <div class="img-wrapper"><img src="vazk1.webp" alt="Vazk 1"></div>
+            <div class="img-wrapper"><img src="mpnavde4-vazk1.webp" alt="Vazk 1"></div>
          </div>
          <div class="static-item" onclick="openLightbox('vazk2.webp')">
-            <div class="img-wrapper"><img src="vazk2.webp" alt="Vazk 2"></div>
+            <div class="img-wrapper"><img src="mpnavdep-vazk2.webp" alt="Vazk 2"></div>
          </div>
       </div>
 
@@ -857,10 +830,10 @@
         <span class="asset-label">Projetos &amp; Manuais</span>
         <div class="image-grid">
           
-          <div class="strategy-card" onclick="openProject('index.html', 'Landing Page — Entre Fios e Encantarias')">
+          <div class="strategy-card" onclick="openProject('LandingPage - EntreFioseLinhas.html', 'Landing Page — Entre Fios e Encantarias')">
             <img src="thumb-landing.webp" alt="Preview Landing" class="strategy-thumb">
             <div class="strategy-content">
-              <h3 style="font-size: 1rem; color: var(--fg; font-weight: 800;">Entre Fios e Encantarias</h3>
+              <h3 style="font-size: 1rem; color: var(--accent); font-weight: 800;">LandingPage Entre Fios e Encantarias</h3>
               <p class="meta">Landing Page Interativa</p>
             </div>
           </div>
@@ -868,7 +841,7 @@
           <div class="strategy-card" onclick="openProject('Manual_de_Marca__Entre Fios e Encantarias.html', 'Manual Matizes Dumont V2')">
             <img src="thumb-manual-matizes.webp" alt="Preview Manual" class="strategy-thumb">
             <div class="strategy-content">
-              <h3 style="font-size: 1rem; color: var(--fg); font-weight: 800;">Manual da Oficina "Entre Fios e Encantarias" V2</h3>
+              <h3 style="font-size: 1rem; color: var(--accent); font-weight: 800;">Manual Oficina "Entre Fios e Encantarias" V2</h3>
               <p class="meta">Manual de Marca</p>
             </div>
           </div>
@@ -876,7 +849,7 @@
           <div class="strategy-card" onclick="openProject('Manual de Marca - Vanda.html', 'Manual de Marca — Vanda')">
              <img src="thumb-manual-vanda.webp" alt="Preview Vanda" class="strategy-thumb">
              <div class="strategy-content">
-              <h3 style="font-size: 1rem; color: var(--fg); font-weight: 800;">Manual Vanda Mendes</h3>
+              <h3 style="font-size: 1rem; color: var(--accent); font-weight: 800;">Manual Vanda Mendes</h3>
               <p class="meta">Manual de Marca</p>
             </div>
           </div>
@@ -968,7 +941,7 @@
     }
 
     window.addEventListener('load', () => {
-       document.querySelectorAll('.slider-input').forEach(i => handleSlider(i));
+      document.querySelectorAll('.slider-input').forEach(i => handleSlider(i));
       
       const ctx = document.getElementById('growthChart').getContext('2d');
       new Chart(ctx, {
@@ -999,7 +972,7 @@
           }
       });
 
-      populateCarousel('carousel-angular', ['angular1.webp', 'angular2.webp', 'angular3.webp', 'angular4.webp', 'angular5.1.webp', 'angular5.2.webp', 'angular5.3.webp']);
+      populateCarousel('carousel-angular', ['mpnavbpz-angular1.webp', 'angular2.webp', 'angular3.webp', 'angular4.webp', 'angular5.1.webp', 'angular5.2.webp', 'angular5.3.webp']);
       populateCarousel('carousel-metalab', ['metalab1.webp', 'metalab2.webp', 'metalab3.webp', 'metalab4.webp', 'metalab5.webp', 'metalab6.webp', 'metalab7.webp']);
       populateCarousel('carousel-matizes-social', ['matizes-novo-1.webp', 'matizes-novo-2.webp', 'matizes-novo-3.webp', 'matizes-novo-4.webp']);
     });

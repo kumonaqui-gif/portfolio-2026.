@@ -248,114 +248,118 @@
 
     /* Timeline */
     .timeline-container {
-      position: relative;
-      margin-top: 40px;
-      padding-bottom: 20px;
-    }
+  position: relative;
+  margin-top: 40px;
+  padding-bottom: 20px;
+}
 
-    @media (min-width: 1024px) {
-      .timeline-scroll {
-        display: flex;
-        overflow-x: auto !important;
-        gap: 60px;
-        padding: 40px 40px 80px 40px;
-        scrollbar-width: thin;
-        scrollbar-color: var(--accent) var(--border);
-      }
-     .timeline-scroll {
-        display: flex;
-        overflow-x: auto;
-        gap: 40px;
-        padding: 60px 40px;
-        scrollbar-width: auto;
-        scrollbar-color: var(--accent) var(--border);
-      }
-      .timeline-scroll::-webkit-scrollbar { height: 12px; }
-      .timeline-scroll::-webkit-scrollbar-track { 
-        background: var(--surface); 
-        border: 1px solid var(--border);
-        border-radius: 6px;
-      }
-      .timeline-scroll::-webkit-scrollbar-thumb { 
-        background: var(--accent); 
-        border-radius: 6px;
-        border: 2px solid var(--surface);
-      }
-      
-      .timeline-line {
-        top: 50%;
-        left: 0;
-        right: 0;
-        height: 1px;
-        transform: translateY(-50%);
-        position: absolute;
-        background: var(--border);
-        z-index: 1;
-      }
-      .timeline-item {
-        min-width: 320px;
-        position: relative;
-        z-index: 2;
-        padding: 24px;
-        background: var(--surface);
-        border: 1px solid var(--border);
-        box-shadow: var(--shadow);
-      }
-      .timeline-item:nth-child(even) { margin-top: 180px; }
-      .timeline-item:nth-child(odd) { margin-bottom: 180px; }
-      
-      .timeline-instruction {
-        text-align: center;
-        color: var(--muted);
-        font-weight: 800;
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        margin-bottom: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 12px;
-        letter-spacing: 0.1em;
-      }
-      .timeline-instruction svg { animation: slide-right 2s infinite; }
-    }
+@media (min-width: 1024px) {
+  /* Scroll Invisível mas funcional */
+  .timeline-scroll {
+    display: flex;
+    overflow-x: auto !important;
+    gap: 40px;
+    padding: 60px 40px 40px 40px;
+    scrollbar-width: none; /* Oculta no Firefox */
+  }
+  .timeline-scroll::-webkit-scrollbar { display: none; } /* Oculta no Chrome/Safari */
 
-    @media (max-width: 1023px) {
-      .timeline-scroll {
-        display: flex;
-        flex-direction: column;
-        gap: 40px;
-        padding-left: 30px;
-      }
-      .timeline-line {
-        top: 0;
-        bottom: 0;
-        left: 0;
-        width: 1px;
-        position: absolute;
-        background: var(--border);
-        z-index: 1;
-      }
-      .timeline-item {
-        position: relative;
-        padding: 20px;
-        background: var(--surface);
-        border: 1px solid var(--border);
-      }
-      .timeline-item::before {
-        content: "";
-        position: absolute;
-        left: -35px;
-        top: 25px;
-        width: 10px;
-        height: 10px;
-        background: var(--red);
-        border-radius: 50%;
-        z-index: 5;
-        box-shadow: 0 0 0 4px var(--bg);
-      }
-      .timeline-instruction { display: none; }
-    }
+  .timeline-line {
+    top: 45%; /* Ajustado para centralizar entre os boxes */
+    left: 0; right: 0;
+    height: 1px;
+    position: absolute;
+    background: var(--border);
+    z-index: 1;
+  }
+
+  .timeline-item {
+    min-width: 320px;
+    position: relative;
+    z-index: 2;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+
+  /* Alternância dos boxes */
+  .timeline-item:nth-child(even) { margin-top: 160px; }
+  .timeline-item:nth-child(odd) { margin-bottom: 160px; }
+
+  /* REMOVIDO: .timeline-item::before (bolinha vermelha desktop) */
+
+  /* Instrução sobre a barra */
+  .timeline-instruction {
+    text-align: center;
+    color: var(--muted);
+    font-weight: 800;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    margin: 32px 0 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.1em;
+  }
+  .timeline-instruction svg { animation: slide-right 2s infinite; }
+
+  /* Barra de Scroll Estilo index-5 */
+  .custom-scrollbar {
+    height: 6px;
+    background: var(--border);
+    width: 60%;
+    margin: 0 auto;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+  .custom-scrollbar-thumb {
+    position: absolute;
+    height: 100%;
+    width: 30%;
+    background: var(--accent);
+    left: 0;
+    border-radius: 10px;
+    transition: left 0.1s ease-out;
+  }
+}
+
+@media (max-width: 1023px) {
+  .timeline-scroll {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding-left: 35px;
+  }
+  .timeline-line {
+    top: 0; bottom: 0; left: 0;
+    width: 1px;
+    position: absolute;
+    background: var(--border);
+    z-index: 1;
+  }
+  .timeline-item {
+    position: relative;
+    padding: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+  /* Ponto vermelho RETORNADO apenas para Mobile */
+  .timeline-item::before {
+    content: "";
+    position: absolute;
+    left: -40px;
+    top: 25px;
+    width: 10px; height: 10px;
+    background: var(--red);
+    border-radius: 50%;
+    z-index: 5;
+    box-shadow: 0 0 0 4px var(--bg);
+  }
+  .timeline-instruction, .custom-scrollbar { display: none; }
+}
 
     /* Marquee Infinite Fixed */
     .marquee {
@@ -747,12 +751,7 @@
         <div class="project-content" style="padding: var(--gutter) 0;">
           <span class="asset-label">Linha do Tempo de Lançamentos</span>
           
-          <div class="timeline-container">
-            <div class="timeline-instruction">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
-              Arraste para explorar os lançamentos
-            </div>
-            
+          
             <div class="timeline-line"></div>
             <div class="timeline-scroll" id="timeline-scroll">
               <div class="timeline-item">
@@ -791,6 +790,16 @@
                 <img src="timeline7.webp" alt="Oficina Borde Garças" style="margin-top: 10px;">
               </div>
             </div>
+          <div class="timeline-instruction">
+    Arraste para explorar os lançamentos
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+  </div>
+          
+  <!-- Barra de Scroll Customizada -->
+  <div class="custom-scrollbar">
+    <div class="custom-scrollbar-thumb" id="timeline-thumb"></div>
+  </div>
+</div>
           </div>
         </div>
       </div>
@@ -959,6 +968,18 @@
     }
 
     window.addEventListener('load', () => {
+         // Começa aqui
+      const tScroll = document.getElementById('timeline-scroll');
+  const tThumb = document.getElementById('timeline-thumb');
+  
+  if(tScroll && tThumb) {
+    tScroll.addEventListener('scroll', () => {
+      // Calcula a porcentagem do scroll (0 a 70, pois o thumb tem 30% de largura)
+      const scrollPct = (tScroll.scrollLeft / (tScroll.scrollWidth - tScroll.clientWidth)) * 70;
+      tThumb.style.left = scrollPct + '%';
+    });
+  }
+// Termina aqui
       document.querySelectorAll('.slider-input').forEach(i => handleSlider(i));
       
       const ctx = document.getElementById('growthChart').getContext('2d');

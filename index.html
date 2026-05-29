@@ -968,19 +968,7 @@
     }
 
     window.addEventListener('load', () => {
-         // Começa aqui
-      const tScroll = document.getElementById('timeline-scroll');
-  const tThumb = document.getElementById('timeline-thumb');
-  
-  if(tScroll && tThumb) {
-    tScroll.addEventListener('scroll', () => {
-      // Calcula a porcentagem do scroll (0 a 70, pois o thumb tem 30% de largura)
-      const scrollPct = (tScroll.scrollLeft / (tScroll.scrollWidth - tScroll.clientWidth)) * 70;
-      tThumb.style.left = scrollPct + '%';
-    });
-  }
-// Termina aqui
-      document.querySelectorAll('.slider-input').forEach(i => handleSlider(i));
+       document.querySelectorAll('.slider-input').forEach(i => handleSlider(i));
       
       const ctx = document.getElementById('growthChart').getContext('2d');
       new Chart(ctx, {

@@ -262,7 +262,25 @@
         scrollbar-width: thin;
         scrollbar-color: var(--accent) var(--border);
       }
-      .timeline-scroll::-webkit-scrollbar { height: 10px; }
+     .timeline-scroll {
+        display: flex;
+        overflow-x: auto;
+        gap: 40px;
+        padding: 60px 40px;
+        scrollbar-width: auto;
+        scrollbar-color: var(--accent) var(--border);
+      }
+      .timeline-scroll::-webkit-scrollbar { height: 12px; }
+      .timeline-scroll::-webkit-scrollbar-track { 
+        background: var(--surface); 
+        border: 1px solid var(--border);
+        border-radius: 6px;
+      }
+      .timeline-scroll::-webkit-scrollbar-thumb { 
+        background: var(--accent); 
+        border-radius: 6px;
+        border: 2px solid var(--surface);
+      }
       
       .timeline-line {
         top: 50%;
